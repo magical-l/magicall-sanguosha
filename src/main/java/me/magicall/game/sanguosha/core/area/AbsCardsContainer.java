@@ -1,36 +1,30 @@
 package me.magicall.game.sanguosha.core.area;
 
-import com.google.common.collect.Lists;
 import me.magicall.game.card.Card;
+import me.magicall.game.sanguosha.core.gaming.Sanguosha;
 
 import java.util.Collection;
-import java.util.List;
 
 /**
+ * 牌区域的抽象类。
+ *
  * @author Liang Wenjian
  */
-public abstract class AbsArea implements Area {
+public abstract class AbsCardsContainer<C extends Collection<Card>> implements CardsContainer<C> {
 
-    private final String name;
+    protected final String name;
 
-    private final List<Card> cards;
+    protected final Sanguosha game;
+    protected final C cards;
 
-    public AbsArea(final String name) {
-        this(name, Lists.newArrayList());
-    }
-
-    protected AbsArea(final String name, final List<Card> cards) {
-        this.name = name;
+    protected AbsCardsContainer(final Sanguosha game, final C cards) {
+        this.name = getClass().getSimpleName();
+        this.game = game;
         this.cards = cards;
     }
 
     @Override
-    public boolean canGain(final Collection<Card> cards) {
-        return true;
-    }
-
-    @Override
-    public List<Card> getCards() {
+    public C getCards() {
         return cards;
     }
 

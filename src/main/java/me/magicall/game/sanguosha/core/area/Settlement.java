@@ -7,13 +7,13 @@ import me.magicall.game.sanguosha.core.gaming.Sanguosha;
 import java.util.Collection;
 
 /**
- * 弃牌堆。
+ * 结算区。
  *
  * @author Liang Wenjian
  */
-public class UsedCardStack extends AbsCardsContainer<Collection<Card>> {
+public class Settlement extends AbsCardsContainer<Collection<Card>> {
 
-    public UsedCardStack(final Sanguosha game) {
+    public Settlement(final Sanguosha game) {
         super(game, Lists.newLinkedList());
     }
 }
