@@ -35,7 +35,7 @@ public abstract class AbsCardsContainer<C extends Collection<Card>> implements C
 
     public String toString() {
         final StringBuilder sb = new StringBuilder(getName()).append(":[");
-        cards.stream().forEach(e -> sb.append(e).append(','));
+        cards.stream().forEach(e -> sb.append(e.getFlower()).append(e.getPoint()).append(e.getName()).append(','));
         return sb.append(']').toString();
     }
 }

@@ -21,4 +21,8 @@ public abstract class AbsPlayerCardArea<C extends Collection<Card>> extends AbsC
     public Player getOwner() {
         return owner;
     }
+
+    public String toString() {
+        return getOwner().getName() + '-' + super.toString();
+    }
 }
