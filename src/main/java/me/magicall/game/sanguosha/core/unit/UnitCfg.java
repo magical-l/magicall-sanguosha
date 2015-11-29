@@ -1,4 +1,4 @@
-package me.magicall.game.card;
+package me.magicall.game.sanguosha.core.unit;
 
 import me.magicall.mark.Named;
 
@@ -7,5 +7,5 @@ import me.magicall.mark.Named;
  */
 public interface UnitCfg extends Named {
 
-    int getHpUpperBound();
+    double getMaxHp();
 }

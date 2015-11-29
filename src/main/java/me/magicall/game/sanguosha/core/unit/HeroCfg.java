@@ -1,7 +1,6 @@
 package me.magicall.game.sanguosha.core.unit;
 
 import com.google.common.collect.Lists;
-import me.magicall.game.card.UnitCfg;
 import me.magicall.game.sanguosha.core.skill.Skill;
 
 import java.util.Collection;
@@ -14,21 +13,32 @@ import java.util.Collection;
 public class HeroCfg implements UnitCfg {
 
     private final String name;
-    private final int hpUpperBound;
+    private final int maxHP;
     private final Country country;
     private final Gender gender;
     private final Collection<Skill> skills;
 
-    public HeroCfg(final String name, final int hpUpperBound, final Country country, final Gender gender,
-                   final Skill... skills) {
-        this(name, hpUpperBound, country, gender, Lists.newArrayList(skills));
+    public HeroCfg(final int maxHP, final Country country, final Gender gender, final Skill... skills) {
+        this(maxHP, country, gender, Lists.newArrayList(skills));
     }
 
-    public HeroCfg(final String name, final int hpUpperBound, final Country country, final Gender gender,
+    public HeroCfg(final String name, final int maxHP, final Country country, final Gender gender,
+                   final Skill... skills) {
+        this(name, maxHP, country, gender, Lists.newArrayList(skills));
+    }
+
+    public HeroCfg(final int maxHP, final Country country, final Gender gender, final Collection<Skill> skills) {
+        name = getClass().getName();
+        this.maxHP = maxHP;
+        this.country = country;
+        this.gender = gender;
+        this.skills = skills;
+    }
+
+    public HeroCfg(final String name, final int maxHP, final Country country, final Gender gender,
                    final Collection<Skill> skills) {
-        super();
         this.name = name;
-        this.hpUpperBound = hpUpperBound;
+        this.maxHP = maxHP;
         this.country = country;
         this.gender = gender;
         this.skills = skills;
@@ -40,8 +50,8 @@ public class HeroCfg implements UnitCfg {
     }
 
     @Override
-    public int getHpUpperBound() {
-        return hpUpperBound;
+    public double getMaxHp() {
+        return maxHP;
     }
 
     public Country getCountry() {
@@ -58,9 +68,8 @@ public class HeroCfg implements UnitCfg {
 
     @Override
     public String toString() {
-        return getClass().getSimpleName() + hashCode() + ":{" +
-                "name:'" + name + '\'' +
-                ", hpUpperBound:" + hpUpperBound +
+        return "HeroCfg_" + getName() + ":{" +
+                "maxHP:" + maxHP +
                 ", country:" + country +
                 ", gender:" + gender +
                 ", skills:" + skills +

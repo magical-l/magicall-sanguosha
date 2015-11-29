@@ -1,12 +1,11 @@
 package me.magicall.game.sanguosha.core.unit;
 
 import com.google.common.collect.Lists;
-import me.magicall.game.card.Unit;
 import me.magicall.game.sanguosha.core.area.EquipArea;
 import me.magicall.game.sanguosha.core.area.HandArea;
 import me.magicall.game.sanguosha.core.area.JudgementArea;
-import me.magicall.game.sanguosha.core.gaming.position.Position;
 import me.magicall.game.sanguosha.core.gaming.Sanguosha;
+import me.magicall.game.sanguosha.core.gaming.position.Position;
 import me.magicall.game.sanguosha.core.player.GamingPlayer;
 import me.magicall.game.sanguosha.core.skill.Skill;
 
@@ -22,139 +21,164 @@ public class Hero implements Unit {
 
     private final HeroCfg heroCfg;
 
-    //游戏进行时数据
     private final Sanguosha game;
     private GamingPlayer player;
-    private Position coordinate;
-    //◆角色的体力有可能小于0。
-    private int hp;
-
-    private final HandArea hand = new HandArea();
-    private final EquipArea equip = new EquipArea();
-    private final JudgementArea judgement = new JudgementArea();
+    //角色的体力有可能小于0。
+    private final Hp hp;
 
     //下面这些初始化数据在游戏中是可以改变的。
-    private String name;
-    private int hpUpperBound;
     private Country country;
+    private Gender gender;
     private Collection<Skill> skills;
 
     public Hero(final HeroCfg heroCfg, final Sanguosha game, final GamingPlayer player, final Position coordinate) {
         this.heroCfg = heroCfg;
         this.game = game;
         this.player = player;
-        this.coordinate = coordinate;
-        name = heroCfg.getName();
-        hpUpperBound = heroCfg.getHpUpperBound();
         country = heroCfg.getCountry();
         skills = Lists.newArrayList(heroCfg.getSkills());
-        hp = heroCfg.getHpUpperBound();
+        hp = new HpImpl(heroCfg.getMaxHp());
     }
 
-    public boolean isInjured() {
-        //如果角色的当前体力值小于其体力上限，称为该角色已受伤；如果角色的当前体力值等于其体力上限，称为该角色未受伤。
-        return hp < hpUpperBound;
-    }
+    //-------------------------基本属性
 
-    public int getLostHp() {
-        //◆当角色的体力降到0或更低时，其已损失的体力值等于其体力上限。
-        return hp <= 0 ? hpUpperBound : hpUpperBound - hp;
-    }
-
-    @Override
-    public String getName() {
-        return name;
-    }
-
-    public void setName(final String name) {
-        this.name = name;
-    }
-
-    public int getHp() {
-        return hp;
-    }
-
-    public void setHp(final int hp) {
-        this.hp = hp;
-    }
-
-    @Override
-    public int getHpUpperBound() {
-        return hpUpperBound;
-    }
-
+    /**
+     * 获取武将初始化配置。
+     *
+     * @return
+     */
     @Override
     public HeroCfg getCfg() {
         return heroCfg;
     }
 
-    public void setHpUpperBound(final int hpUpperBound) {
-        this.hpUpperBound = hpUpperBound;
+    /**
+     * 获取武将性别。
+     *
+     * @return
+     */
+    public Gender getGender() {
+        return getCfg().getGender();
     }
 
+    /**
+     * 获取武将的体力牌。
+     *
+     * @return
+     */
+    @Override
+    public Hp getHp() {
+        return hp;
+    }
+
+    /**
+     * 获取武将已损失体力值。
+     *
+     * @return
+     */
+    public double getLostHp() {
+        //当角色的体力降到0或更低时，其已损失的体力值等于其体力上限。
+        return hp.getValue() <= 0 ? hp.getMax() : hp.getLost();
+    }
+
+    /**
+     * 获取武将的势力。
+     *
+     * @return
+     */
     public Country getCountry() {
         return country;
     }
 
+    /**
+     * 设置武将的势力。
+     *
+     * @param country
+     */
     public void setCountry(final Country country) {
         this.country = country;
     }
 
+    /**
+     * 获取武将的技能。
+     *
+     * @return
+     */
     public Collection<Skill> getSkills() {
         return skills;
     }
 
+    /**
+     * 设置武将的技能。
+     *
+     * @param skills
+     */
     public void setSkills(final Collection<Skill> skills) {
         this.skills = skills;
     }
 
-    public Position getCoordinate() {
-        return coordinate;
-    }
-
-    public void setCoordinate(final Position coordinate) {
-        this.coordinate = coordinate;
-    }
-
+    /**
+     * 获取武将所在的游戏局。
+     *
+     * @return
+     */
     public Sanguosha getGame() {
         return game;
     }
 
+    /**
+     * 获取武将的玩家。
+     *
+     * @return
+     */
     public GamingPlayer getPlayer() {
         return player;
     }
 
+    /**
+     * 设置武将的玩家。
+     *
+     * @param player
+     */
     public void setPlayer(final GamingPlayer player) {
         this.player = player;
     }
 
+    /**
+     * 获取武将的手牌区。
+     *
+     * @return
+     */
     public HandArea getHand() {
-        return hand;
+        return player.getHand();
     }
 
+    /**
+     * 获取武将的设备区。
+     *
+     * @return
+     */
     public EquipArea getEquip() {
-        return equip;
+        return player.getEquip();
     }
 
+    /**
+     * 获取武将的判定区。
+     *
+     * @return
+     */
     public JudgementArea getJudgement() {
-        return judgement;
+        return player.getJudgement();
     }
 
     @Override
     public String toString() {
-        return getClass().getSimpleName() + hashCode() + ":{" +
+        return "Hero_"+getName() + ":{" +
                 "skills:" + skills +
                 ", country:" + country +
-                ", hpUpperBound:" + hpUpperBound +
-                ", name:'" + name + '\'' +
-                ", judgement:" + judgement +
-                ", equip:" + equip +
-                ", hand:" + hand +
                 ", hp:" + hp +
-                ", coordinate:" + coordinate +
                 ", player:" + player +
                 ", game:" + game +
-                ", heroCfg:" + heroCfg +
                 '}';
     }
 }

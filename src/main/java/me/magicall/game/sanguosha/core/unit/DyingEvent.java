@@ -1,13 +1,14 @@
 package me.magicall.game.sanguosha.core.unit;
 
-import me.magicall.game.card.Event;
+import me.magicall.game.sanguosha.core.gaming.event.EventTemplate;
+import me.magicall.game.sanguosha.core.gaming.Sanguosha;
 
 /**
  * 濒死事件
  *
  * @author Liang Wenjian
  */
-public class DyingEvent extends Event {
+public class DyingEvent extends EventTemplate<Hero, Sanguosha> {
 
     /**
      * Create a new ApplicationEvent.
@@ -16,10 +17,5 @@ public class DyingEvent extends Event {
      */
     public DyingEvent(final Hero source) {
         super(source);
-    }
-
-    @Override
-    public Hero getSource() {
-        return (Hero) super.getSource();
     }
 }
