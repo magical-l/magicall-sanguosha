@@ -1,12 +1,12 @@
 package me.magicall.game.sanguosha.core.area;
 
 import com.google.common.collect.Lists;
-import me.magicall.game.card.Card;
-import me.magicall.game.card.CardType;
+import me.magicall.game.sanguosha.core.card.Card;
+import me.magicall.game.sanguosha.core.card.CardType;
 import me.magicall.game.sanguosha.core.card.CardTypes;
 import me.magicall.game.sanguosha.core.gaming.GameException;
 import me.magicall.game.sanguosha.core.gaming.Sanguosha;
-import me.magicall.game.sanguosha.core.player.Player;
+import me.magicall.game.sanguosha.core.player.SanguoshaPlayer;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,7 +23,7 @@ public class EquipArea extends AbsPlayerCardArea<List<Card>> {
     public static final int DEFENCE_HORSE_INDEX = 2;
     public static final int ATTACK_HORSE_INDEX = 3;
 
-    public EquipArea(final Sanguosha game, final Player owner) {
+    public EquipArea(final Sanguosha game, final SanguoshaPlayer owner) {
         super(game, Lists.newArrayList(null, null, null, null), owner);
     }
 

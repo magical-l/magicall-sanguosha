@@ -1,7 +1,10 @@
 package me.magicall.game.sanguosha.core.gaming.stage;
 
+import me.magicall.game.sanguosha.core.gaming.event.Event;
 import me.magicall.game.sanguosha.core.gaming.Sanguosha;
-import me.magicall.game.sanguosha.core.unit.Hero;
+import me.magicall.game.sanguosha.core.player.SanguoshaPlayer;
+
+import java.util.List;
 
 /**
  * 阶段。
@@ -12,7 +15,14 @@ public interface Stage {
 
     void play();
 
-    Hero getOwner();
+    /**
+     * 主人
+     *
+     * @return
+     */
+    SanguoshaPlayer getOwner();
 
     Sanguosha getGame();
+
+    List<Event<?, ?>> getEvents();
 }

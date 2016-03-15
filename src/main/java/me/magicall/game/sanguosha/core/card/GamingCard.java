@@ -1,8 +1,5 @@
 package me.magicall.game.sanguosha.core.card;
 
-import me.magicall.game.card.Card;
-import me.magicall.game.card.CardCfg;
-import me.magicall.game.card.CardType;
 import me.magicall.game.sanguosha.core.skill.Skill;
 import me.magicall.game.sanguosha.core.unit.Hero;
 import me.magicall.mark.HasIdGetter.HasIntIdGetter;

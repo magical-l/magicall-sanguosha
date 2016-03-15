@@ -1,13 +1,14 @@
 package me.magicall.game.sanguosha.core.gaming.round;
 
-import me.magicall.game.card.Event;
+import me.magicall.game.sanguosha.core.gaming.event.EventTemplate;
+import me.magicall.game.sanguosha.core.gaming.Sanguosha;
 
 /**
+ * 回合开始事件。
+ *
  * @author Liang Wenjian
  */
-public class RoundStartEvent extends Event {
-
-    private static final long serialVersionUID = 6200653555136903343L;
+public class RoundStartEvent extends EventTemplate<SanguoshaRound, Sanguosha> {
 
     public RoundStartEvent(final SanguoshaRound source) {
         super(source);

@@ -10,20 +10,19 @@ import me.magicall.game.sanguosha.core.unit.Hero;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 /**
  * @author Liang Wenjian
  */
-public enum Selectors implements Selector {
+public enum Selectors implements TargetSelector {
     ONE {
         @Override
         public List<Hero> getTarget(final Sanguosha game, final GamingPlayer user, final Skill skill) {
-            final List<Position> positions = game.getSurvivors().stream()//
-                    .filter(e -> !Objects.equals(e, user))//
-                    .map(GamingPlayer::getPosition)//
-                    .collect(Collectors.toList());
+            final List<Position> positions = null;
+//                    game.getSurvivors().stream()//
+//                    .filter(e -> !Objects.equals(e, user))//
+//                    .map(GamingPlayer::getPosition)//
+//                    .collect(Collectors.toList());
             final PositionsSelection positionsSelection = user.requireInput(new PositionsOptions(positions));
             final GamingPlayer player = game.getPlayer(positionsSelection.getPositions().get(0));
             return Collections.singletonList(player.getHero());
@@ -38,16 +37,18 @@ public enum Selectors implements Selector {
     OTHERS {
         @Override
         public List<Hero> getTarget(final Sanguosha game, final GamingPlayer user, final Skill skill) {
-            return game.getSurvivors().stream()//
-                    .filter(e -> Objects.equals(e, user))//
-                    .map(GamingPlayer::getHero)//
-                    .collect(Collectors.toList());
+            return null;
+//                    game.getSurvivors().stream()//
+//                    .filter(e -> Objects.equals(e, user))//
+//                    .map(GamingPlayer::getHero)//
+//                    .collect(Collectors.toList());
         }
     },
     ALL {
         @Override
         public List<Hero> getTarget(final Sanguosha game, final GamingPlayer user, final Skill skill) {
-            return game.getSurvivors().stream().map(GamingPlayer::getHero).collect(Collectors.toList());
+            return null;
+//                    game.getSurvivors().stream().map(GamingPlayer::getHero).collect(Collectors.toList());
         }
     }
 }

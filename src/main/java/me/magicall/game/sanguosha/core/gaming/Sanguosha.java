@@ -4,29 +4,36 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import me.magicall.game.card.Card;
-import me.magicall.game.card.CardCfg;
-import me.magicall.game.card.Event;
-import me.magicall.game.card.Game;
-import me.magicall.game.card.Round;
-import me.magicall.game.sanguosha.core.area.Battle;
+import me.magicall.game.sanguosha.core.card.Card;
+import me.magicall.game.sanguosha.core.card.CardCfg;
+import me.magicall.game.sanguosha.core.gaming.event.Event;
+import me.magicall.game.sanguosha.core.Targetable;
+import me.magicall.game.sanguosha.core.area.Settlement;
 import me.magicall.game.sanguosha.core.area.CardStack;
 import me.magicall.game.sanguosha.core.area.HandArea;
 import me.magicall.game.sanguosha.core.area.UsedCardStack;
 import me.magicall.game.sanguosha.core.card.GamingCard;
 import me.magicall.game.sanguosha.core.gaming.option.SelectHeroOptions;
 import me.magicall.game.sanguosha.core.gaming.position.Position;
+import me.magicall.game.sanguosha.core.gaming.round.HeroTurn;
 import me.magicall.game.sanguosha.core.gaming.round.SanguoshaRound;
+import me.magicall.game.sanguosha.core.gaming.stage.Stage;
 import me.magicall.game.sanguosha.core.gaming.target.BecomingTargetsEvent;
-import me.magicall.game.sanguosha.core.gaming.target.Selector;
+import me.magicall.game.sanguosha.core.gaming.target.TargetSelector;
 import me.magicall.game.sanguosha.core.player.GamingPlayer;
 import me.magicall.game.sanguosha.core.player.IO;
 import me.magicall.game.sanguosha.core.player.Role;
+import me.magicall.game.sanguosha.core.rule.Rule;
 import me.magicall.game.sanguosha.core.skill.Effect;
 import me.magicall.game.sanguosha.core.skill.Skill;
 import me.magicall.game.sanguosha.core.skill.SkillEvent;
 import me.magicall.game.sanguosha.core.unit.Hero;
 import me.magicall.game.sanguosha.core.unit.HeroCfg;
+import me.magicall.game.sanguosha.embedded.标准.event.HarmingEvent;
+import me.magicall.game.sanguosha.embedded.标准.event.HerosShownEvent;
+import me.magicall.game.sanguosha.embedded.标准.event.InitHandEvent;
+import me.magicall.game.sanguosha.embedded.标准.event.WarEndEvent;
+import me.magicall.game.sanguosha.embedded.标准.event.WarStartEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,13 +43,12 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Random;
 
 /**
  * @author Liang Wenjian
  */
-public class Sanguosha implements Game {
-
-    private static final int INIT_HAND_CARDS_COUNT = 4;
+public class Sanguosha implements Game, Targetable {
 
     //------------------------ 工具
 
@@ -50,7 +56,9 @@ public class Sanguosha implements Game {
 
     //------------------------ 配置
 
-    private final GamingCfg cfg;
+    private final SanguoshaCfg cfg;
+    private List<IO> ios;
+    private List<Rule> rules;
 
     //------------------------ 初始化数据
 
@@ -66,39 +74,68 @@ public class Sanguosha implements Game {
     private final List<HeroCfg> heroCfgs;
 
     /**
-     * 牌库。
+     * 牌库。键为牌在游戏中的id。
      */
     private final Map<Integer, GamingCard> idCardMap = Maps.newHashMap();
+    /**
+     * 位置管理器
+     */
+    private final PositionManager positionManager = new PositionManager();
+
+    /**
+     * 队伍列表
+     */
+    private List<Team> teams;
+    /**
+     * 记分牌
+     */
+    private Scoreboard scoreboard;
+
+    /**
+     * 当前轮次
+     */
+    private Round curRound;
+    /**
+     * 当前回合
+     */
+    private HeroTurn curHeroTurn;
+    /**
+     * 当前阶段
+     */
+    private Stage curStage;
+    /**
+     * 当前玩家
+     */
+    private GamingPlayer curPlayer;
 
     //------------------------ 游戏
 
     /**
-     * 玩家列表。按位置顺序排列。
+     * 存活者。按位置顺序排列。
      */
     private final List<GamingPlayer> survivors = Lists.newArrayList();
-
     /**
      * 牌堆。
      */
-    private final CardStack cardStack = new CardStack();
+    private final CardStack cardStack = new CardStack(null);//TODO
     /**
      * 结算区。
      */
-    private final Battle battle = new Battle();
+    private final Settlement settlement = new Settlement();
     /**
      * 弃牌堆。
      */
     private final UsedCardStack usedCardStack = new UsedCardStack();
+
     /**
      * 轮次。
      */
     private final List<Round> rounds = Lists.newArrayList();
-
     private boolean gameOver;
 
     //===============================================
 
-    public Sanguosha(final GamingCfg cfg) {
+    public Sanguosha(final SanguoshaCfg cfg) {
         this.cfg = cfg;
         final List<HeroCfg> tmp = Lists.newArrayList(cfg.getHeroCfgs());
         Collections.shuffle(tmp);
@@ -106,7 +143,7 @@ public class Sanguosha implements Game {
     }
 
     @Override
-    public void play() {
+    public Scoreboard start() {
         initCardStack();
         initPosition();
 
@@ -114,10 +151,11 @@ public class Sanguosha implements Game {
 
         initHand();
 
-        start();
+        start0();
+        return null;
     }
 
-    private void start() {
+    private void start0() {
         publishEvent(new WarStartEvent(this));
         int roundIndex = 0;
         while (!gameOver) {
@@ -131,7 +169,7 @@ public class Sanguosha implements Game {
 
     private void initHand() {
         survivors.forEach(player -> {
-            final Collection<Card> cards = cardsStackPop(INIT_HAND_CARDS_COUNT);
+            final Collection<Card> cards = cardsStackPop(cfg.getInitHandCardsCount());
             final HandArea hand = player.getHero().getHand();
             if (hand.canGain(cards)) {
                 hand.gain(cards);
@@ -167,15 +205,12 @@ public class Sanguosha implements Game {
         return rounds.size() + 1;
     }
 
-    public void publishEvent(final Event event) {
+    public void publishEvent(final Event<?, ?> event) {
+        //TODO
     }
 
     public int calculateDistance(final Hero from, final Hero to) {
-        publishEvent(new CalculateDistanceEvent(this, from));
-
-        final int distance = from.getCoordinate().distance(to.getCoordinate());
-
-        return distance;//TODO:没算死人呢。
+        return positionManager.calculateDistance(from, to);
     }
 
     private List<HeroCfg> getOptionHeros(final GamingPlayer player) {
@@ -253,8 +288,8 @@ public class Sanguosha implements Game {
         return cardStack;
     }
 
-    public Battle getBattle() {
-        return battle;
+    public Settlement getSettlement() {
+        return settlement;
     }
 
     public UsedCardStack getUsedCardStack() {
@@ -270,20 +305,20 @@ public class Sanguosha implements Game {
     }
 
     @Override
-    public List<GamingPlayer> getSurvivors() {
-        return survivors;
+    public List<GamingPlayer> getPlayers() {
+        return players;
     }
 
     @Override
-    public List<GamingPlayer> getPlayers() {
-        return players;
+    public List<Team> getTeams() {
+        return teams;
     }
 
     public void cardWork(final Card card, final Hero user) {
         final Collection<Skill> skills = card.getSkills();
         final Collection<Card> resources = Collections.singleton(card);
         for (final Skill skill : skills) {
-            final Selector targetSelector = skill.getTargetSelector();
+            final TargetSelector targetSelector = skill.getTargetSelector();
             final BecomingTargetsEvent becomingTargetsEvent = new BecomingTargetsEvent(
                     targetSelector.getTarget(this, user.getPlayer(), skill), skill);
             publishEvent(becomingTargetsEvent);
@@ -299,7 +334,7 @@ public class Sanguosha implements Game {
         if (cardStack.getCardsCount() < count) {
             //牌堆不够就洗牌
             final List<Card> cards = Lists.newArrayList(usedCardStack.getCards());
-            usedCardStack.discard(cards);
+            usedCardStack.loss(cards);
             Collections.shuffle(cards);
             cardStack.gain(cards);
             //洗牌后依然不够
@@ -307,7 +342,7 @@ public class Sanguosha implements Game {
                 throw new NoEnoughCardException();
             }
         }
-        return cardStack.pop(count);
+        return cardStack.poll(count);
     }
 
     public Card getCard(final Integer cardId) {
@@ -329,7 +364,7 @@ public class Sanguosha implements Game {
         final HarmingEvent harmingEvent = new HarmingEvent(target, 1);
         publishEvent(harmingEvent);
         final int count = harmingEvent.getCount();
-        target.setHp(target.getHp() - count);
+//        target.setHp(target.getHp() - count);
         //TODO
     }
 
@@ -357,16 +392,17 @@ public class Sanguosha implements Game {
             final ListIterator<Hook<?>> iterator = hooks.listIterator();
             while (iterator.hasNext()) {
                 @SuppressWarnings("unchecked")
-                final Hook<Event> next = (Hook<Event>) iterator.next();
+                final Hook<Event<?, ?>> next = (Hook<Event<?, ?>>) iterator.next();
                 next.before(event);
-                if (event.isEnd()) {
-                    break;
-                }
+//TODO:有没有中断事件执行这种说法？
+//                if (event.isEnd()) {
+//                    break;
+//                }
             }
 
             while (iterator.hasPrevious()) {
                 @SuppressWarnings("unchecked")
-                final Hook<Event> previous = (Hook<Event>) iterator.previous();
+                final Hook<Event<?, ?>> previous = (Hook<Event<?, ?>>) iterator.previous();
                 previous.after(event);
             }
         }
@@ -380,4 +416,23 @@ public class Sanguosha implements Game {
                             final List<Hero> targets) {
         skill.action(this, user, targets, resources);
     }
+
+    private static final Random RANDOM = new Random();
+
+    static void initRole(final Map<Role, Integer> roleAndCount, final Collection<GamingPlayer> players) {
+        final List<Role> tmp = Lists.newArrayList();
+        roleAndCount.entrySet().forEach(e -> {
+            final Role role = e.getKey();
+            for (int i = 0; i < e.getValue(); i++) {
+                tmp.add(role);
+            }
+        });
+        players.stream().forEach(p -> {
+            final int index = RANDOM.nextInt(tmp.size());
+            final Role role = tmp.get(index);
+            tmp.remove(index);
+            p.setRole(role);
+        });
+    }
+
 }

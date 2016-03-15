@@ -3,6 +3,8 @@ package me.magicall.game.sanguosha.core.gaming.option;
 import java.util.List;
 
 /**
+ * 选项。
+ *
  * @author Liang Wenjian
  */
 public interface Options<T extends Selection> {

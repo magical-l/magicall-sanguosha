@@ -1,7 +1,8 @@
 package me.magicall.game.sanguosha.core.gaming.stage;
 
-import me.magicall.game.card.Card;
+import me.magicall.game.sanguosha.core.card.Card;
 import me.magicall.game.sanguosha.core.gaming.Sanguosha;
+import me.magicall.game.sanguosha.core.player.GamingPlayer;
 import me.magicall.game.sanguosha.core.unit.Hero;
 
 import java.util.List;
@@ -16,17 +17,17 @@ import java.util.ListIterator;
 public class JudgementStage extends AbsStage {
 
     public JudgementStage(final Sanguosha game, final Hero hero) {
-        super(game, hero);
+        super(game, hero.getPlayer());
     }
 
     @Override
     protected void playInternal() {
         final Sanguosha game = getGame();
-        final Hero owner = getOwner();
+        final GamingPlayer owner = (GamingPlayer) getOwner();
         final List<Card> cards = owner.getJudgement().getCards();
         for (final ListIterator<Card> iterator = cards.listIterator(); iterator.hasPrevious(); ) {
             final Card card = iterator.previous();
-            game.cardWork(card, owner);
+            game.cardWork(card, null);// TODO
         }
     }
 }

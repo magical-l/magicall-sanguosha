@@ -1,9 +1,9 @@
 package me.magicall.game.sanguosha.core.area;
 
 import com.google.common.collect.Lists;
-import me.magicall.game.card.Card;
+import me.magicall.game.sanguosha.core.card.Card;
 import me.magicall.game.sanguosha.core.gaming.Sanguosha;
-import me.magicall.game.sanguosha.core.player.Player;
+import me.magicall.game.sanguosha.core.player.SanguoshaPlayer;
 
 import java.util.List;
 import java.util.Random;
@@ -17,7 +17,7 @@ public class HandArea extends AbsPlayerCardArea<List<Card>> {
 
     private static final Random RANDOM = new Random();
 
-    public HandArea(final Sanguosha game, final Player owner) {
+    public HandArea(final Sanguosha game, final SanguoshaPlayer owner) {
         super(game, Lists.newArrayList(), owner);
     }
 

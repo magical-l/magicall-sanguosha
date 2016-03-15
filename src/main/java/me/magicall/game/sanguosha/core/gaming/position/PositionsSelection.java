@@ -5,6 +5,8 @@ import me.magicall.game.sanguosha.core.gaming.option.Selection;
 import java.util.List;
 
 /**
+ * 位置选择结果。
+ *
  * @author Liang Wenjian
  */
 public class PositionsSelection implements Selection {

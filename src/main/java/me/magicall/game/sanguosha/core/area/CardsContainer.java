@@ -1,7 +1,7 @@
 package me.magicall.game.sanguosha.core.area;
 
-import me.magicall.game.card.Card;
-import me.magicall.game.card.Targetable;
+import me.magicall.game.sanguosha.core.card.Card;
+import me.magicall.game.sanguosha.core.Targetable;
 import me.magicall.mark.Named;
 
 import java.util.Collection;

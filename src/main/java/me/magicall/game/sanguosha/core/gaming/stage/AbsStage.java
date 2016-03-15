@@ -1,7 +1,11 @@
 package me.magicall.game.sanguosha.core.gaming.stage;
 
+import com.google.common.collect.Lists;
+import me.magicall.game.sanguosha.core.gaming.event.Event;
 import me.magicall.game.sanguosha.core.gaming.Sanguosha;
-import me.magicall.game.sanguosha.core.unit.Hero;
+import me.magicall.game.sanguosha.core.player.SanguoshaPlayer;
+
+import java.util.List;
 
 /**
  * @author Liang Wenjian
@@ -9,12 +13,14 @@ import me.magicall.game.sanguosha.core.unit.Hero;
 public abstract class AbsStage implements Stage {
 
     private final Sanguosha game;
-    private final Hero hero;
+    private final SanguoshaPlayer owner;
 
-    public AbsStage(final Sanguosha game, final Hero hero) {
+    private final List<Event<?, ?>> events = Lists.newArrayList();
+
+    public AbsStage(final Sanguosha game, final SanguoshaPlayer owner) {
         super();
         this.game = game;
-        this.hero = hero;
+        this.owner = owner;
     }
 
     @Override
@@ -30,12 +36,17 @@ public abstract class AbsStage implements Stage {
     protected abstract void playInternal();
 
     @Override
-    public Hero getOwner() {
-        return hero;
+    public SanguoshaPlayer getOwner() {
+        return owner;
     }
 
     @Override
     public Sanguosha getGame() {
         return game;
+    }
+
+    @Override
+    public List<Event<?, ?>> getEvents() {
+        return events;
     }
 }

@@ -1,8 +1,5 @@
 package me.magicall.game.sanguosha.core.card;
 
-import me.magicall.game.card.Card;
-import me.magicall.game.card.CardCfg;
-
 import java.util.Collection;
 import java.util.Collections;
 

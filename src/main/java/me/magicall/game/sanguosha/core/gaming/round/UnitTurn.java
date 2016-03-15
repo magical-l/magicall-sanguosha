@@ -1,13 +1,23 @@
 package me.magicall.game.sanguosha.core.gaming.round;
 
-import me.magicall.game.card.Unit;
+import me.magicall.game.sanguosha.core.unit.Unit;
 
 /**
+ * 单位的一个轮次。
+ *
  * @author Liang Wenjian
  */
-public interface UnitTurn {
+public interface UnitTurn<U extends Unit> {
 
+    /**
+     * 单位玩。
+     */
     void play();
 
-    Unit getOwner();
+    /**
+     * 主人。
+     *
+     * @return
+     */
+    U getOwner();
 }

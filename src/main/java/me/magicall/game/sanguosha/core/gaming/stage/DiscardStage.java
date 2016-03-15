@@ -2,6 +2,7 @@ package me.magicall.game.sanguosha.core.gaming.stage;
 
 import me.magicall.game.sanguosha.core.area.HandArea;
 import me.magicall.game.sanguosha.core.gaming.Sanguosha;
+import me.magicall.game.sanguosha.core.player.GamingPlayer;
 import me.magicall.game.sanguosha.core.unit.Hero;
 
 import java.util.Collections;
@@ -15,13 +16,13 @@ import java.util.Collections;
 public class DiscardStage extends AbsStage {
 
     public DiscardStage(final Sanguosha game, final Hero hero) {
-        super(game, hero);
+        super(game, hero.getPlayer());
     }
 
     @Override
     protected void playInternal() {
-        final Hero owner = getOwner();
-        final int defaultRemainCount = owner.getHp();
+        final GamingPlayer owner = (GamingPlayer) getOwner();
+        final int defaultRemainCount = 0;//owner.getHp();
 
         final Sanguosha game = getGame();
         final CalculateDiscardCountEvent event = new CalculateDiscardCountEvent(this, defaultRemainCount);
@@ -30,9 +31,9 @@ public class DiscardStage extends AbsStage {
 
         final HandArea hand = owner.getHand();
         for (int count = hand.getCardsCount() - remainCount; count > 0; count = hand.getCardsCount() - remainCount) {
-            owner.getPlayer().requireInput(new DiscardOptions(owner, count))//
+            owner.requireInput(new DiscardOptions(null, count))//TODO
                     .getCardIds().stream()//
-                    .forEach(e -> hand.discard(Collections.singleton(game.getCard(e))));
+                    .forEach(e -> hand.loss(Collections.singleton(game.getCard(e))));
         }
     }
 }

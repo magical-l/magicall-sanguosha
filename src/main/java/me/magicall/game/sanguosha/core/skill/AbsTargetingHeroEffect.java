@@ -1,6 +1,6 @@
 package me.magicall.game.sanguosha.core.skill;
 
-import me.magicall.game.card.Card;
+import me.magicall.game.sanguosha.core.card.Card;
 import me.magicall.game.sanguosha.core.gaming.Sanguosha;
 import me.magicall.game.sanguosha.core.player.GamingPlayer;
 import me.magicall.game.sanguosha.core.unit.Hero;

@@ -1,8 +1,9 @@
 package me.magicall.game.sanguosha.core.gaming.stage;
 
-import me.magicall.game.card.Card;
+import me.magicall.game.sanguosha.core.card.Card;
 import me.magicall.game.sanguosha.core.gaming.Sanguosha;
 import me.magicall.game.sanguosha.core.gaming.option.SkillSelection;
+import me.magicall.game.sanguosha.core.player.GamingPlayer;
 import me.magicall.game.sanguosha.core.skill.Skill;
 import me.magicall.game.sanguosha.core.unit.Hero;
 
@@ -24,15 +25,15 @@ import java.util.stream.Collectors;
 public class PlayerPlayStage extends AbsStage {
 
     public PlayerPlayStage(final Sanguosha game, final Hero hero) {
-        super(game, hero);
+        super(game, hero.getPlayer());
     }
 
     @Override
     protected void playInternal() {
-        final Hero owner = getOwner();
+        final GamingPlayer owner = (GamingPlayer) getOwner();
         final Sanguosha game = getGame();
         while (true) {
-            final SkillSelection skillSelection = owner.getPlayer().requireInput(new PlayerPlayOptions(owner));
+            final SkillSelection skillSelection = owner.requireInput(new PlayerPlayOptions(null));//TODO
             final Integer skillId = skillSelection.getSkillId();
             if (skillId == null) {
                 //点击了“结束”
@@ -45,7 +46,7 @@ public class PlayerPlayStage extends AbsStage {
             final Skill skill = game.getSkill(skillId);
             final List<Hero> targets = targetIds.stream().map(e -> game.getPlayer(e).getHero())
                                                 .collect(Collectors.toList());
-            game.skillAction(skill, owner, resources, targets);
+            game.skillAction(skill, null, resources, targets);//TODO
         }
     }
 }

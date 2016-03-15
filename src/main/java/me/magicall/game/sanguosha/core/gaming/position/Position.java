@@ -1,6 +1,8 @@
 package me.magicall.game.sanguosha.core.gaming.position;
 
-import me.magicall.game.card.Coordinate;
+import me.magicall.game.sanguosha.core.gaming.Game;
+import me.magicall.game.sanguosha.core.Targetable;
+import me.magicall.game.sanguosha.core.unit.Hero;
 
 import java.util.Objects;
 
@@ -9,9 +11,12 @@ import java.util.Objects;
  *
  * @author Liang Wenjian
  */
-public class Position implements Coordinate<Position, Integer>, Comparable<Position> {
+public class Position implements Coordinate<Position, Integer>, Comparable<Position>,Targetable {
 
     private final int position;
+
+    private Game game;
+    private Hero unit;
 
     public Position(final int position) {
         super();

@@ -1,8 +1,8 @@
 package me.magicall.game.sanguosha.core.area;
 
-import me.magicall.game.card.Card;
+import me.magicall.game.sanguosha.core.card.Card;
 import me.magicall.game.sanguosha.core.gaming.Sanguosha;
-import me.magicall.game.sanguosha.core.player.Player;
+import me.magicall.game.sanguosha.core.player.SanguoshaPlayer;
 
 import java.util.Collection;
 
@@ -11,14 +11,14 @@ import java.util.Collection;
  */
 public abstract class AbsPlayerCardArea<C extends Collection<Card>> extends AbsCardsContainer<C> {
 
-    protected final Player owner;
+    protected final SanguoshaPlayer owner;
 
-    public AbsPlayerCardArea(final Sanguosha game, final C cards, final Player owner) {
+    public AbsPlayerCardArea(final Sanguosha game, final C cards, final SanguoshaPlayer owner) {
         super(game, cards);
         this.owner = owner;
     }
 
-    public Player getOwner() {
+    public SanguoshaPlayer getOwner() {
         return owner;
     }
 

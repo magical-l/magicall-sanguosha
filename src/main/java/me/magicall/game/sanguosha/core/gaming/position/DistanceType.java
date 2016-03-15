@@ -7,15 +7,23 @@ import me.magicall.game.sanguosha.core.skill.Skill;
 import java.util.Map;
 
 /**
+ * 距离类型。
+ *
  * @author Liang Wenjian
  */
 public enum DistanceType {
+    /**
+     * 攻击距离。
+     */
     ATTACK_DISTANCE {
         @Override
         public Map<GamingPlayer, Integer> getPlayers(final Sanguosha game, final GamingPlayer user, final Skill skill) {
             return game.calculateAttackables(user);
         }
     },
+    /**
+     * 位置距离。
+     */
     POSITION_DISTANCE {
         @Override
         public Map<GamingPlayer, Integer> getPlayers(final Sanguosha game, final GamingPlayer user, final Skill skill) {

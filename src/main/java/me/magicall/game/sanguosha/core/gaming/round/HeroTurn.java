@@ -20,10 +20,12 @@ import java.util.List;
  *
  * @author Liang Wenjian
  */
-public class HeroTurn implements UnitTurn {
+public class HeroTurn implements UnitTurn<Hero> {
 
     private final SanguoshaRound round;
     private final Hero owner;
+    private List<Stage> stages;
+    private Stage curStage;
 
     public HeroTurn(final SanguoshaRound round, final Hero owner) {
         super();
@@ -36,7 +38,7 @@ public class HeroTurn implements UnitTurn {
         final Sanguosha game = getGame();
         game.publishEvent(new TurnStartEvent(this));
 
-        round.setCurUnit(getOwner());
+//        round.setCurUnit(getOwner());
 
         final List<Stage> stages = Lists.newArrayList(//
                 new PrepareStage(game, owner),//
@@ -54,7 +56,7 @@ public class HeroTurn implements UnitTurn {
             iterator = event.getStageIterator();
         }
 
-        round.setCurUnit(null);
+//        round.setCurUnit(null);
 
         game.publishEvent(new TurnEndEvent(this));
     }
@@ -66,5 +68,17 @@ public class HeroTurn implements UnitTurn {
 
     public Sanguosha getGame() {
         return round.getGame();
+    }
+
+    public SanguoshaRound getRound() {
+        return round;
+    }
+
+    public List<Stage> getStages() {
+        return stages;
+    }
+
+    public Stage getCurStage() {
+        return curStage;
     }
 }

@@ -1,7 +1,5 @@
 package me.magicall.game.sanguosha.core.card;
 
-import me.magicall.game.card.CardType;
-
 /**
  * @author Liang Wenjian
  */

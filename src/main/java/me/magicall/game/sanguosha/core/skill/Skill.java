@@ -1,9 +1,9 @@
 package me.magicall.game.sanguosha.core.skill;
 
-import me.magicall.game.Targetable;
-import me.magicall.game.card.Card;
+import me.magicall.game.sanguosha.core.Targetable;
+import me.magicall.game.sanguosha.core.card.Card;
 import me.magicall.game.sanguosha.core.gaming.Sanguosha;
-import me.magicall.game.sanguosha.core.gaming.target.Selector;
+import me.magicall.game.sanguosha.core.gaming.target.TargetSelector;
 import me.magicall.game.sanguosha.core.unit.Hero;
 import me.magicall.mark.Named;
 
@@ -25,9 +25,9 @@ public interface Skill extends Named, Targetable {
     default void init(final Sanguosha game, final Hero owner) {
     }
 
-    Effect<?> action(Sanguosha game, Hero user, List<Hero> targets, Collection<Card> resources);
+    Effect<?> action(Sanguosha game, Hero hero, List<Hero> targets, Collection<Card> resources);
 
-    Selector getTargetSelector();
+    TargetSelector getTargetSelector();
 
     default int getMinResourcesCount() {
         return 1;

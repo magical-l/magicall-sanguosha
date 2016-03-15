@@ -1,6 +1,6 @@
 package me.magicall.game.sanguosha.core.area;
 
-import me.magicall.game.card.Card;
+import me.magicall.game.sanguosha.core.card.Card;
 import me.magicall.game.sanguosha.core.gaming.Sanguosha;
 
 import java.util.Collection;

@@ -1,7 +1,7 @@
 package me.magicall.game.sanguosha.core.card;
 
 /**
- * 扑克牌的花色。
+ * 牌的花色。
  *
  * @author Liang Wenjian
  */

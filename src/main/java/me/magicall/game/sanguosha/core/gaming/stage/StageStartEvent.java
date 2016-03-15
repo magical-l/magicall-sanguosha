@@ -1,13 +1,12 @@
 package me.magicall.game.sanguosha.core.gaming.stage;
 
-import me.magicall.game.card.Event;
+import me.magicall.game.sanguosha.core.gaming.event.EventTemplate;
+import me.magicall.game.sanguosha.core.unit.Hero;
 
 /**
  * @author Liang Wenjian
  */
-public class StageStartEvent extends Event {
-
-    private static final long serialVersionUID = 4877505663494214017L;
+public class StageStartEvent extends EventTemplate<Stage, Hero> {
 
     /**
      * Create a new ApplicationEvent.
@@ -16,10 +15,5 @@ public class StageStartEvent extends Event {
      */
     public StageStartEvent(final Stage source) {
         super(source);
-    }
-
-    @Override
-    public Stage getSource() {
-        return (Stage) super.getSource();
     }
 }

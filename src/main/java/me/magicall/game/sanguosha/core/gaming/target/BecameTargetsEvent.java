@@ -1,6 +1,6 @@
 package me.magicall.game.sanguosha.core.gaming.target;
 
-import me.magicall.game.card.Event;
+import me.magicall.game.sanguosha.core.gaming.event.EventTemplate;
 import me.magicall.game.sanguosha.core.skill.Skill;
 import me.magicall.game.sanguosha.core.unit.Hero;
 
@@ -9,11 +9,7 @@ import java.util.Collection;
 /**
  * @author Liang Wenjian
  */
-public class BecameTargetsEvent extends Event {
-
-    private static final long serialVersionUID = 8054436658248901302L;
-
-    private Skill skill;
+public class BecameTargetsEvent extends EventTemplate<Collection<Hero>, Skill> {
 
     /**
      * Create a new ApplicationEvent.
@@ -21,17 +17,7 @@ public class BecameTargetsEvent extends Event {
      * @param source the component that published the event (never {@code null})
      */
     public BecameTargetsEvent(final Collection<Hero> source, final Skill skill) {
-        super(source);
-        this.skill = skill;
+        super(source, skill);
     }
 
-    @Override
-    @SuppressWarnings("unchecked")
-    public Collection<Hero> getSource() {
-        return (Collection<Hero>) super.getSource();
-    }
-
-    public Skill getSkill() {
-        return skill;
-    }
 }

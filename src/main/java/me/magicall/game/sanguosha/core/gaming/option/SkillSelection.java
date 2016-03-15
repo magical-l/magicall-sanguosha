@@ -3,6 +3,8 @@ package me.magicall.game.sanguosha.core.gaming.option;
 import java.util.List;
 
 /**
+ * 选择技能的结果。
+ *
  * @author Liang Wenjian
  */
 public class SkillSelection implements Selection {

@@ -1,9 +1,9 @@
 package me.magicall.game.sanguosha.core.gaming;
 
-import me.magicall.game.card.CardCfg;
-import me.magicall.game.sanguosha.core.unit.HeroCfg;
+import me.magicall.game.sanguosha.core.card.CardCfg;
 import me.magicall.game.sanguosha.core.player.IO;
 import me.magicall.game.sanguosha.core.player.Role;
+import me.magicall.game.sanguosha.core.unit.HeroCfg;
 
 import java.util.Collection;
 import java.util.Map;
@@ -13,21 +13,15 @@ import java.util.Map;
  */
 public class SanguoshaCfg implements GamingCfg {
 
-    private final Collection<IO> IOs;
-    private final Collection<HeroCfg> heroCfgs;
-    private final Map<CardCfg, Integer> countOfCardCfg;
-    private final boolean positionFixed;
-    private final Map<Role, Integer> countOfRole;
+    private Collection<IO> IOs;
+    private  Collection<HeroCfg> heroCfgs;
+    private  Map<CardCfg, Integer> countOfCardCfg;
+    private  boolean positionFixed;
+    private  Map<Role, Integer> countOfRole;
+    private int initHandCardsCount;
 
-    public SanguoshaCfg(final Collection<IO> IOs, final Collection<HeroCfg> heroCfgs,
-                        final Map<CardCfg, Integer> countOfCardCfg, final boolean positionFixed,
-                        final Map<Role, Integer> countOfRole) {
+    public SanguoshaCfg() {
         super();
-        this.IOs = IOs;
-        this.heroCfgs = heroCfgs;
-        this.countOfCardCfg = countOfCardCfg;
-        this.positionFixed = positionFixed;
-        this.countOfRole = countOfRole;
     }
 
     @Override
@@ -53,5 +47,9 @@ public class SanguoshaCfg implements GamingCfg {
     @Override
     public Map<Role, Integer> getCountOfRole() {
         return countOfRole;
+    }
+
+    public int getInitHandCardsCount() {
+        return initHandCardsCount;
     }
 }

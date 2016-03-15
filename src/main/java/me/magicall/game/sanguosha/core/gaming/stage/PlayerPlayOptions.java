@@ -3,8 +3,8 @@ package me.magicall.game.sanguosha.core.gaming.stage;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
 import me.magicall.game.sanguosha.core.gaming.GameException;
-import me.magicall.game.sanguosha.core.gaming.GetUsableCardsEvent;
-import me.magicall.game.sanguosha.core.gaming.GetUsableSkillsEvent;
+import me.magicall.game.sanguosha.embedded.标准.event.GetUsableCardsEvent;
+import me.magicall.game.sanguosha.embedded.标准.event.GetUsableSkillsEvent;
 import me.magicall.game.sanguosha.core.gaming.Sanguosha;
 import me.magicall.game.sanguosha.core.gaming.option.Options;
 import me.magicall.game.sanguosha.core.gaming.option.SkillSelection;
@@ -41,12 +41,12 @@ public class PlayerPlayOptions implements Options<SkillSelection> {
         final GetUsableCardsEvent getUsableCardsEvent = new GetUsableCardsEvent(this,
                 Lists.newArrayList(hero.getHand().getCards()));
         game.publishEvent(getUsableCardsEvent);
-        getUsableCardsEvent.getCards().forEach(rt::add);
+        getUsableCardsEvent.getTargets().forEach(rt::add);
         //获取可以用的技能
         final GetUsableSkillsEvent getUsableSkillsEvent = new GetUsableSkillsEvent(this,
                 Lists.newArrayList(hero.getSkills()));
         game.publishEvent(getUsableSkillsEvent);
-        getUsableSkillsEvent.getSkills().forEach(rt::add);
+        getUsableSkillsEvent.getTargets().forEach(rt::add);
         //结束按钮
         rt.add("结束");
         return rt;

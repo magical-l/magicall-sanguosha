@@ -1,6 +1,7 @@
 package me.magicall.game.sanguosha.core.gaming.stage;
 
-import me.magicall.game.card.Event;
+import me.magicall.game.sanguosha.core.gaming.event.EventTemplate;
+import me.magicall.game.sanguosha.core.gaming.Sanguosha;
 import me.magicall.game.sanguosha.core.gaming.round.HeroTurn;
 
 import java.util.Iterator;
@@ -8,9 +9,7 @@ import java.util.Iterator;
 /**
  * @author Liang Wenjian
  */
-public class AfterStagesEvent extends Event {
-
-    private static final long serialVersionUID = 2465699218424956984L;
+public class AfterStagesEvent extends EventTemplate<HeroTurn, Sanguosha> {
 
     private final Stage curStage;
     private Iterator<Stage> stageIterator;

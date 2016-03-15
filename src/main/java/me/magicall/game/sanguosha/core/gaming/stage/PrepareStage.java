@@ -12,7 +12,7 @@ import me.magicall.game.sanguosha.core.unit.Hero;
 public class PrepareStage extends AbsStage {
 
     public PrepareStage(final Sanguosha game, final Hero hero) {
-        super(game, hero);
+        super(game, hero.getPlayer());
     }
 
     @Override

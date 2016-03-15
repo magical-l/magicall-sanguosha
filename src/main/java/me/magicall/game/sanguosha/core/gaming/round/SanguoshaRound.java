@@ -1,9 +1,8 @@
 package me.magicall.game.sanguosha.core.gaming.round;
 
 import com.google.common.collect.Lists;
-import me.magicall.game.card.Round;
+import me.magicall.game.sanguosha.core.gaming.Round;
 import me.magicall.game.sanguosha.core.gaming.Sanguosha;
-import me.magicall.game.sanguosha.core.unit.Hero;
 
 import java.util.List;
 
@@ -15,26 +14,26 @@ import java.util.List;
 public class SanguoshaRound implements Round {
 
     private final Sanguosha game;
-    private final int roundIndex;
+    private final int id;
 
-    private final List<UnitTurn> unitTurns;
-    private Hero curUnit;
+    private final List<HeroTurn> heroTurns;
+    private boolean finished;
 
-    public SanguoshaRound(final Sanguosha game, final int roundIndex) {
+    public SanguoshaRound(final Sanguosha game, final int id) {
         super();
         this.game = game;
-        this.roundIndex = roundIndex;
-        unitTurns = Lists.newArrayListWithExpectedSize(game.getSurvivors().size());
+        this.id = id;
+        heroTurns = Lists.newArrayListWithExpectedSize(game.getPlayers().size());
     }
 
     @Override
     public void play() {
         game.publishEvent(new RoundStartEvent(this));
-        game.getSurvivors().stream().forEach(player -> {
-            final UnitTurn unitTurn = new HeroTurn(this, player.getHero());
-            unitTurn.play();
-            unitTurns.add(unitTurn);
-        });
+//        game.getSurvivors().stream().forEach(player -> {
+//            final UnitTurn<?> unitTurn = new HeroTurn(this, player.getHero());
+//            unitTurn.play();
+//            unitTurns.add(unitTurn);
+//        });
         game.publishEvent(new RoundEndEvent(this));
     }
 
@@ -44,15 +43,27 @@ public class SanguoshaRound implements Round {
     }
 
     @Override
-    public int getRoundIndex() {
-        return roundIndex;
+    public List<HeroTurn> getHeroTurns() {
+        return heroTurns;
     }
 
-    public void setCurUnit(final Hero curUnit) {
-        this.curUnit = curUnit;
+    @Override
+    public List<HeroTurn> getRemainingHeroTurns() {
+        return null;//TODO
     }
 
-    public Hero getCurUnit() {
-        return curUnit;
+    @Override
+    public HeroTurn getCurHeroTurn() {
+        return null;//TODO
+    }
+
+    @Override
+    public boolean isFinished() {
+        return finished;
+    }
+
+    @Override
+    public Integer getId() {
+        return id;
     }
 }

@@ -5,6 +5,8 @@ import me.magicall.game.sanguosha.core.unit.HeroCfg;
 import java.util.List;
 
 /**
+ * 武将选项列表。
+ *
  * @author Liang Wenjian
  */
 public class SelectHeroOptions implements Options<HeroSelection> {

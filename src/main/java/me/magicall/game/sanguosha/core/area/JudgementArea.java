@@ -1,9 +1,9 @@
 package me.magicall.game.sanguosha.core.area;
 
-import me.magicall.game.card.Card;
+import me.magicall.game.sanguosha.core.card.Card;
 import me.magicall.game.sanguosha.core.card.CardTypes;
 import me.magicall.game.sanguosha.core.gaming.Sanguosha;
-import me.magicall.game.sanguosha.core.player.Player;
+import me.magicall.game.sanguosha.core.player.SanguoshaPlayer;
 
 import java.util.ArrayDeque;
 import java.util.Collection;
@@ -16,7 +16,7 @@ import java.util.Deque;
  */
 public class JudgementArea extends AbsPlayerCardArea<Deque<Card>> {
 
-    public JudgementArea(final Sanguosha game, final Player owner) {
+    public JudgementArea(final Sanguosha game, final SanguoshaPlayer owner) {
         super(game, new ArrayDeque<>(), owner);
     }
 
