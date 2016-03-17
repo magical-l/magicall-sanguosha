@@ -1,7 +1,7 @@
 package me.magicall.game.sanguosha.embedded.sp.skills;
 
 import me.magicall.game.sanguosha.core.card.Card;
-import me.magicall.game.sanguosha.core.gaming.Hook;
+import me.magicall.game.sanguosha.core.gaming.event.listener.Hook;
 import me.magicall.game.sanguosha.core.gaming.Sanguosha;
 import me.magicall.game.sanguosha.core.gaming.stage.StageStartEvent;
 import me.magicall.game.sanguosha.core.gaming.target.TargetSelector;

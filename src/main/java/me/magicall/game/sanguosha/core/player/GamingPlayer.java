@@ -36,7 +36,7 @@ public class GamingPlayer implements SanguoshaPlayer {
     /**
      * 玩家代理
      */
-    private IO io;//player在游戏中有可能会被替换成AI。
+    private Channel channel;//player在游戏中有可能会被替换成AI。
     /**
      * 是否已阵亡
      */
@@ -57,12 +57,12 @@ public class GamingPlayer implements SanguoshaPlayer {
 
     @Override
     public <T extends Selection> T requireInput(final Options<T> options) {
-        return io.requireInput(options);
+        return channel.requireInput(options);
     }
 
     @Override
     public void output(final Object o) {
-        io.output(o);
+        channel.output(o);
     }
 
     @Override
@@ -83,12 +83,12 @@ public class GamingPlayer implements SanguoshaPlayer {
         this.hero = hero;
     }
 
-    public IO getIO() {
-        return io;
+    public Channel getIO() {
+        return channel;
     }
 
-    public void setIO(final IO io) {
-        this.io = io;
+    public void setIO(final Channel channel) {
+        this.channel = channel;
     }
 
     @Override
@@ -151,7 +151,7 @@ public class GamingPlayer implements SanguoshaPlayer {
         return getClass().getSimpleName() + hashCode() + ":{" +
                 "role:" + role +
                 ", hero:" + hero +
-                ", io:" + io +
+                ", channel:" + channel +
                 ", dead:" + dead +
                 '}';
     }

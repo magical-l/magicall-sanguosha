@@ -50,7 +50,7 @@ public class DefaultPlayerManagerImpl implements PlayerManager {
     /**
      * 玩家通道列表
      */
-    private List<IO> ios;
+    private List<Channel> channels;
 
     public DefaultPlayerManagerImpl(final Sanguosha game) {
         super();
@@ -68,8 +68,8 @@ public class DefaultPlayerManagerImpl implements PlayerManager {
     @Override
     public void initPosition() {
         final SanguoshaCfg cfg = game.getCfg();
-        final List<IO> ios = Lists.newArrayList(cfg.getIOs());
-        final int size = ios.size();
+        final List<Channel> channels = Lists.newArrayList(cfg.getIOs());
+        final int size = channels.size();
 
         final Map<Role, Integer> countOfRole = cfg.getCountOfRole();
         final List<Role> tmpRoles = Lists.newArrayListWithExpectedSize(size);
@@ -86,21 +86,21 @@ public class DefaultPlayerManagerImpl implements PlayerManager {
         Collections.shuffle(tmpRoles);
 
         if (!cfg.isPositionFixed()) {
-            Collections.shuffle(ios);
+            Collections.shuffle(channels);
         }
         int i = 1;
-        for (final IO io : ios) {
+        for (final Channel channel : channels) {
             final Position position = new Position(i);
             final GamingPlayer p = new GamingPlayer(null, null);
             p.setRole(tmpRoles.get(i));
-            p.setIO(io);
+            p.setIO(channel);
             p.setPosition(position);
             survivors.add(p);
             players.add(p);
             i++;
         }
         survivors.sort((o1, o2) -> o1.getPosition().compareTo(o2.getPosition()));
-        logger.debug(ios.toString());
+        logger.debug(channels.toString());
     }
 
     @Override
@@ -164,7 +164,7 @@ public class DefaultPlayerManagerImpl implements PlayerManager {
         return positionManager;
     }
 
-    public List<IO> getIos() {
-        return ios;
+    public List<Channel> getChannels() {
+        return channels;
     }
 }

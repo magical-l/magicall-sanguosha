@@ -1,11 +1,12 @@
 package me.magicall.game.sanguosha.core.gaming;
 
 import me.magicall.game.sanguosha.core.card.CardCfg;
-import me.magicall.game.sanguosha.core.unit.HeroCfg;
-import me.magicall.game.sanguosha.core.player.IO;
+import me.magicall.game.sanguosha.core.player.Channel;
 import me.magicall.game.sanguosha.core.player.Role;
+import me.magicall.game.sanguosha.core.unit.HeroCfg;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -13,7 +14,7 @@ import java.util.Map;
  */
 public interface GamingCfg {
 
-    Collection<IO> getIOs();
+    List<Channel> getIOs();
 
     Collection<HeroCfg> getHeroCfgs();
 

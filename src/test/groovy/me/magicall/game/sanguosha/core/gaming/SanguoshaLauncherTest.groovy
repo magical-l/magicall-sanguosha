@@ -6,7 +6,7 @@ import spock.lang.Specification
  */
 class SanguoshaLauncherTest extends Specification {
     def "Launch"() {
-//        List<IO> players = Lists.newArrayList()
+//        List<Channel> players = Lists.newArrayList()
 //        Collection<Rule> rules = Lists.newArrayList()
 //        SanguoshaLauncher launcher = new SanguoshaLauncher(players, rules)
 //        launcher.launch()

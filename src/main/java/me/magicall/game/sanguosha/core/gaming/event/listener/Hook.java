@@ -1,4 +1,4 @@
-package me.magicall.game.sanguosha.core.gaming;
+package me.magicall.game.sanguosha.core.gaming.event.listener;
 
 import me.magicall.game.sanguosha.core.gaming.event.Event;
 

@@ -7,8 +7,8 @@ import me.magicall.game.sanguosha.core.card.CardTypes;
 import me.magicall.game.sanguosha.core.card.Flower;
 import me.magicall.game.sanguosha.core.gaming.Sanguosha;
 import me.magicall.game.sanguosha.core.gaming.SanguoshaCfg;
-import me.magicall.game.sanguosha.core.player.ConsoleIO;
-import me.magicall.game.sanguosha.core.player.IO;
+import me.magicall.game.sanguosha.core.player.ConsoleChannel;
+import me.magicall.game.sanguosha.core.player.Channel;
 import me.magicall.game.sanguosha.core.player.Role;
 import me.magicall.game.sanguosha.core.player.Roles;
 import me.magicall.game.sanguosha.core.unit.Countries;
@@ -30,9 +30,9 @@ public class LauncherTest {
 
         final int playerCount = 8;
 
-        final Collection<IO> ios = Lists.newArrayList();
+        final Collection<Channel> channels = Lists.newArrayList();
         for (int i = 0; i < playerCount; i++) {
-            ios.add(new ConsoleIO());
+            channels.add(new ConsoleChannel());
         }
 
         final Collection<HeroCfg> heroCfgs = Lists.newArrayList(//
@@ -105,7 +105,7 @@ public class LauncherTest {
         countOfRole.put(Roles.反贼, 4);
         countOfRole.put(Roles.内奸, 1);
 
-        final SanguoshaCfg cfg = null;// TODO new SanguoshaCfg(ios, heroCfgs, countOfCardCfg, false, countOfRole);
+        final SanguoshaCfg cfg = null;// TODO new SanguoshaCfg(channels, heroCfgs, countOfCardCfg, false, countOfRole);
         final Sanguosha game = new Sanguosha(cfg);
         game.start();
     }

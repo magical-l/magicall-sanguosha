@@ -13,6 +13,7 @@ import java.util.Objects;
  * @author Liang Wenjian
  */
 public class GamingCard implements HasIntIdGetter, Card {
+
     private final Integer id;
 
     private final CardCfg cardCfg;

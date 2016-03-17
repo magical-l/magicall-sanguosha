@@ -6,6 +6,7 @@ import me.magicall.game.sanguosha.core.area.AreaManager;
 import me.magicall.game.sanguosha.core.card.CardManager;
 import me.magicall.game.sanguosha.core.area.DefaultAreaManagerImpl;
 import me.magicall.game.sanguosha.core.card.DefaultCardManagerImpl;
+import me.magicall.game.sanguosha.core.gaming.event.listener.Hook;
 import me.magicall.game.sanguosha.core.gaming.round.RoundManager;
 import me.magicall.game.sanguosha.core.unit.DefaultHeroManagerImpl;
 import me.magicall.game.sanguosha.core.player.DefaultPlayerManagerImpl;

@@ -13,7 +13,7 @@ import me.magicall.mark.Named;
  *
  * @author Liang Wenjian
  */
-public interface SanguoshaPlayer extends IO, Named {
+public interface SanguoshaPlayer extends Channel, Named {
 
     /**
      * 获取当前游戏。

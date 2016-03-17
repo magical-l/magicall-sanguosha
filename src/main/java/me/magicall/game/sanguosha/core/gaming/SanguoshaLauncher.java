@@ -2,7 +2,7 @@ package me.magicall.game.sanguosha.core.gaming;
 
 import me.magicall.game.sanguosha.core.card.Card;
 import me.magicall.game.sanguosha.core.card.CardCfg;
-import me.magicall.game.sanguosha.core.player.IO;
+import me.magicall.game.sanguosha.core.player.Channel;
 import me.magicall.game.sanguosha.core.player.Role;
 import me.magicall.game.sanguosha.core.rule.Rule;
 
@@ -17,10 +17,10 @@ import java.util.Map;
  */
 public class SanguoshaLauncher {
 
-    private final List<IO> players;
+    private final List<Channel> players;
     private final Collection<Rule> rules;
 
-    public SanguoshaLauncher(final List<IO> players, final Collection<Rule> rules) {
+    public SanguoshaLauncher(final List<Channel> players, final Collection<Rule> rules) {
         super();
         this.players = players;
         this.rules = rules;
@@ -43,7 +43,7 @@ public class SanguoshaLauncher {
 
         //初始化身份
         final Map<Role, Integer> rolesCfg = gameCfg.getCountOfRole();
-        final Map<IO, Role> roleMapping = initRoleMapping(players, rolesCfg);
+        final Map<Channel, Role> roleMapping = initRoleMapping(players, rolesCfg);
         //初始化存活者
         //初始化桌子
         final Map<CardCfg, Integer> countOfCardCfg = gameCfg.getCountOfCardCfg();
@@ -61,7 +61,7 @@ public class SanguoshaLauncher {
         return null;//TODO
     }
 
-    private Map<IO, Role> initRoleMapping(List<IO> players, Map<Role, Integer> rolesCfg) {
+    private Map<Channel, Role> initRoleMapping(List<Channel> players, Map<Role, Integer> rolesCfg) {
         return null;//TODO
     }
 }

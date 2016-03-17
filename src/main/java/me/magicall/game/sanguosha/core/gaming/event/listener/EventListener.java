@@ -1,4 +1,6 @@
-package me.magicall.game.sanguosha.core.gaming.event;
+package me.magicall.game.sanguosha.core.gaming.event.listener;
+
+import me.magicall.game.sanguosha.core.gaming.event.Event;
 
 /**
  * @author Liang Wenjian

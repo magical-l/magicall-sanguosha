@@ -8,7 +8,7 @@ import me.magicall.game.sanguosha.core.gaming.option.Selection;
  *
  * @author Liang Wenjian
  */
-public interface IO {
+public interface Channel {
 
     <T extends Selection> T requireInput(final Options<T> options);
 

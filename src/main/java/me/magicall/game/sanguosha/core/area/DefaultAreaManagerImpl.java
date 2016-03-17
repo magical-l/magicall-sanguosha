@@ -2,7 +2,6 @@ package me.magicall.game.sanguosha.core.area;
 
 import com.google.common.collect.Lists;
 import me.magicall.game.sanguosha.core.card.Card;
-import me.magicall.game.sanguosha.core.gaming.NoEnoughCardException;
 import me.magicall.game.sanguosha.core.gaming.Sanguosha;
 
 import java.util.Collections;

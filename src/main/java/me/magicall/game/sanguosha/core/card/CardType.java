@@ -25,5 +25,5 @@ public interface CardType extends Named {
         return false;
     }
 
-    CardTypes getParent();
+    CardType getParent();
 }

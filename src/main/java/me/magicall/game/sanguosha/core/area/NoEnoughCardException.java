@@ -1,4 +1,6 @@
-package me.magicall.game.sanguosha.core.gaming;
+package me.magicall.game.sanguosha.core.area;
+
+import me.magicall.game.sanguosha.core.gaming.GameException;
 
 /**
  * @author Liang Wenjian

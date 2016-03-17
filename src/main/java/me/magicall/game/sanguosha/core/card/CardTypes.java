@@ -31,7 +31,7 @@ public enum CardTypes implements CardType {
     }
 
     @Override
-    public CardTypes getParent() {
+    public CardType getParent() {
         return parent;
     }
 }

@@ -1,7 +1,6 @@
 package me.magicall.game.sanguosha.core.gaming.event.listener;
 
 import me.magicall.game.sanguosha.core.gaming.GameOverException;
-import me.magicall.game.sanguosha.core.gaming.event.EventListener;
 import me.magicall.game.sanguosha.core.player.Roles;
 import me.magicall.game.sanguosha.core.unit.DeadEvent;
 

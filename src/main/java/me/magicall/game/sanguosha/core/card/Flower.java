@@ -23,6 +23,8 @@ public enum Flower {
      */
     DIAMOND(Color.RED);
 
+    //===========================
+
     public final Color color;
 
     Flower(final Color color) {
