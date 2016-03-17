@@ -18,7 +18,7 @@ public abstract class AbsCardsContainer<C extends Collection<Card>> implements C
     protected final C cards;
 
     protected AbsCardsContainer(final Sanguosha game, final C cards) {
-        this.name = getClass().getSimpleName();
+        name = getClass().getSimpleName();
         this.game = game;
         this.cards = cards;
     }

@@ -3,8 +3,10 @@ package me.magicall.game.sanguosha.core.gaming.round;
 import com.google.common.collect.Lists;
 import me.magicall.game.sanguosha.core.gaming.Round;
 import me.magicall.game.sanguosha.core.gaming.Sanguosha;
+import me.magicall.game.sanguosha.core.player.GamingPlayer;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 一轮。
@@ -16,25 +18,36 @@ public class SanguoshaRound implements Round {
     private final Sanguosha game;
     private final int id;
 
-    private final List<HeroTurn> heroTurns;
-    private boolean finished;
+    private final List<SanguoshaTurn> finishedTurns;
+
+    private SanguoshaTurn curTurn;
 
     public SanguoshaRound(final Sanguosha game, final int id) {
-        super();
         this.game = game;
         this.id = id;
-        heroTurns = Lists.newArrayListWithExpectedSize(game.getPlayers().size());
+        finishedTurns = Lists.newArrayListWithExpectedSize(game.getPlayerManager().getSurvivors().size());
     }
 
     @Override
-    public void play() {
+    public RoundEndEvent play() {
         game.publishEvent(new RoundStartEvent(this));
-//        game.getSurvivors().stream().forEach(player -> {
-//            final UnitTurn<?> unitTurn = new HeroTurn(this, player.getHero());
-//            unitTurn.play();
-//            unitTurns.add(unitTurn);
-//        });
-        game.publishEvent(new RoundEndEvent(this));
+        final List<SanguoshaTurn> nextTurns = game.getPlayerManager().getSurvivors().stream()//
+                .map(player -> new SanguoshaTurnImpl(this, player.getHero()))//
+                .collect(Collectors.toList());
+        while (!nextTurns.isEmpty()) {
+            final SanguoshaTurn turn = nextTurns.remove(0);
+            final GamingPlayer player = turn.getOwner().getPlayer();
+            if (!player.isDead()) {
+                curTurn = new SanguoshaTurnImpl(this, player.getHero());
+                curTurn.play();
+                game.publishEvent(new TurnEndedEvent(this, nextTurns));
+                finishedTurns.add(curTurn);
+            }
+        }
+        curTurn = null;
+        final RoundEndEvent roundEndEvent = new RoundEndEvent(this);
+        game.publishEvent(roundEndEvent);
+        return roundEndEvent;
     }
 
     @Override
@@ -43,23 +56,13 @@ public class SanguoshaRound implements Round {
     }
 
     @Override
-    public List<HeroTurn> getHeroTurns() {
-        return heroTurns;
+    public List<SanguoshaTurn> getFinishedTurns() {
+        return finishedTurns;
     }
 
     @Override
-    public List<HeroTurn> getRemainingHeroTurns() {
-        return null;//TODO
-    }
-
-    @Override
-    public HeroTurn getCurHeroTurn() {
-        return null;//TODO
-    }
-
-    @Override
-    public boolean isFinished() {
-        return finished;
+    public SanguoshaTurn getCurTurn() {
+        return curTurn;
     }
 
     @Override

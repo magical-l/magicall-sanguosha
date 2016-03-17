@@ -10,11 +10,6 @@ import me.magicall.game.sanguosha.core.unit.Unit;
 public interface UnitTurn<U extends Unit> {
 
     /**
-     * 单位玩。
-     */
-    void play();
-
-    /**
      * 主人。
      *
      * @return

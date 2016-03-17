@@ -17,6 +17,8 @@ public abstract class AbsStage implements Stage {
 
     private final List<Event<?, ?>> events = Lists.newArrayList();
 
+    private Event<?, ?> curEvent;
+
     public AbsStage(final Sanguosha game, final SanguoshaPlayer owner) {
         super();
         this.game = game;
@@ -24,13 +26,14 @@ public abstract class AbsStage implements Stage {
     }
 
     @Override
-    public void play() {
+    public Stage play() {
         final Sanguosha game = getGame();
         game.publishEvent(new StageStartEvent(this));
 
         playInternal();
 
         game.publishEvent(new StageEndEvent(this));
+        return this;
     }
 
     protected abstract void playInternal();
@@ -48,5 +51,10 @@ public abstract class AbsStage implements Stage {
     @Override
     public List<Event<?, ?>> getEvents() {
         return events;
+    }
+
+    @Override
+    public Event<?, ?> getCurEvent() {
+        return curEvent;
     }
 }

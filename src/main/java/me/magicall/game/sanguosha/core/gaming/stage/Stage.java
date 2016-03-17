@@ -13,8 +13,6 @@ import java.util.List;
  */
 public interface Stage {
 
-    void play();
-
     /**
      * 主人
      *
@@ -25,4 +23,8 @@ public interface Stage {
     Sanguosha getGame();
 
     List<Event<?, ?>> getEvents();
+
+    Stage play();
+
+    Event<?, ?> getCurEvent();
 }

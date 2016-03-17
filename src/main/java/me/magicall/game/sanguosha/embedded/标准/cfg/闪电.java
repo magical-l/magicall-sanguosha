@@ -50,9 +50,9 @@ public class 闪电 extends CardCfg {
         public void doEffect() {
             targets.forEach(hero -> {
                 final JudgementArea judgement = hero.getJudgement();
-                if (judgement.canGain(resources)) {
-                    judgement.gain(resources);
-                }
+//                if (judgement.canGain(resources)) {
+//                    judgement.gain(resources);
+//                }
             });
         }
     }

@@ -8,8 +8,8 @@ import me.magicall.game.sanguosha.core.gaming.CardSelection;
 import me.magicall.game.sanguosha.core.gaming.Sanguosha;
 import me.magicall.game.sanguosha.core.gaming.option.Options;
 import me.magicall.game.sanguosha.core.gaming.target.BecameTargetsEvent;
-import me.magicall.game.sanguosha.core.gaming.target.TargetSelector;
 import me.magicall.game.sanguosha.core.gaming.target.Selectors;
+import me.magicall.game.sanguosha.core.gaming.target.TargetSelector;
 import me.magicall.game.sanguosha.core.player.GamingPlayer;
 import me.magicall.game.sanguosha.core.skill.AbsTargetingHeroEffect;
 import me.magicall.game.sanguosha.core.skill.Effect;
@@ -17,7 +17,6 @@ import me.magicall.game.sanguosha.core.skill.Skill;
 import me.magicall.game.sanguosha.core.unit.Hero;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -62,7 +61,7 @@ public class 万箭齐发 extends CardCfg {
                 } else {
                     final Integer cardId = selection.getCardId();
                     final Card card = game.getCard(cardId);
-                    player.getHero().getHand().use(Collections.singleton(card));
+//                    player.getHero().getHand().use(Collections.singleton(card));
                 }
             });
         }

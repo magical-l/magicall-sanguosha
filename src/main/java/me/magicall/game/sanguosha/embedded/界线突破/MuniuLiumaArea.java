@@ -12,10 +12,10 @@ import java.util.Collection;
  */
 public class MuniuLiumaArea extends AbsCardsContainer {
     public MuniuLiumaArea() {
-        super("木牛流马");
+        super(null,null);
+//        super("木牛流马");
     }
 
-    @Override
     public boolean canGain(final Collection<Card> cards) {
         return cards.size() == 1;
     }

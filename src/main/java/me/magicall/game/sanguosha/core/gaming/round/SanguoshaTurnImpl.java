@@ -2,7 +2,7 @@ package me.magicall.game.sanguosha.core.gaming.round;
 
 import com.google.common.collect.Lists;
 import me.magicall.game.sanguosha.core.gaming.Sanguosha;
-import me.magicall.game.sanguosha.core.gaming.stage.AfterStagesEvent;
+import me.magicall.game.sanguosha.core.gaming.stage.StageEndedEvent;
 import me.magicall.game.sanguosha.core.gaming.stage.DiscardStage;
 import me.magicall.game.sanguosha.core.gaming.stage.EndStage;
 import me.magicall.game.sanguosha.core.gaming.stage.GainCardStage;
@@ -12,7 +12,6 @@ import me.magicall.game.sanguosha.core.gaming.stage.PrepareStage;
 import me.magicall.game.sanguosha.core.gaming.stage.Stage;
 import me.magicall.game.sanguosha.core.unit.Hero;
 
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -20,45 +19,41 @@ import java.util.List;
  *
  * @author Liang Wenjian
  */
-public class HeroTurn implements UnitTurn<Hero> {
+public class SanguoshaTurnImpl implements UnitTurn<Hero>, SanguoshaTurn {
 
     private final SanguoshaRound round;
     private final Hero owner;
-    private List<Stage> stages;
+    private final List<Stage> finishedStages;
     private Stage curStage;
 
-    public HeroTurn(final SanguoshaRound round, final Hero owner) {
+    public SanguoshaTurnImpl(final SanguoshaRound round, final Hero owner) {
         super();
         this.round = round;
         this.owner = owner;
+        finishedStages = Lists.newArrayList();
     }
 
     @Override
-    public void play() {
+    public TurnEndEvent play() {
         final Sanguosha game = getGame();
-        game.publishEvent(new TurnStartEvent(this));
-
-//        round.setCurUnit(getOwner());
-
-        final List<Stage> stages = Lists.newArrayList(//
+        final List<Stage> stages = Lists.newArrayList(//todo:这个初始化做到rule监听器去
                 new PrepareStage(game, owner),//
                 new JudgementStage(game, owner),//
                 new GainCardStage(game, owner),//
                 new PlayerPlayStage(game, owner),//
                 new DiscardStage(game, owner),//
                 new EndStage(game, owner));
-
-        for (Iterator<Stage> iterator = stages.iterator(); iterator.hasNext(); ) {
-            final Stage stage = iterator.next();
-            stage.play();
-            final AfterStagesEvent event = new AfterStagesEvent(this, stage, iterator);
-            game.publishEvent(event);
-            iterator = event.getStageIterator();
+        game.publishEvent(new TurnStartEvent(this));
+        while (!stages.isEmpty()) {
+            curStage = stages.remove(0);
+            curStage.play();
+            game.publishEvent(new StageEndedEvent(this, curStage, stages));
+            finishedStages.add(curStage);
         }
-
-//        round.setCurUnit(null);
-
-        game.publishEvent(new TurnEndEvent(this));
+        curStage = null;
+        final TurnEndEvent turnEndEvent = new TurnEndEvent(this);
+        game.publishEvent(turnEndEvent);
+        return turnEndEvent;
     }
 
     @Override
@@ -74,10 +69,12 @@ public class HeroTurn implements UnitTurn<Hero> {
         return round;
     }
 
-    public List<Stage> getStages() {
-        return stages;
+    @Override
+    public List<Stage> getFinishedStages() {
+        return finishedStages;
     }
 
+    @Override
     public Stage getCurStage() {
         return curStage;
     }

@@ -1,7 +1,7 @@
 package me.magicall.game.sanguosha.core.gaming;
 
-import me.magicall.game.sanguosha.core.gaming.Game;
-import me.magicall.game.sanguosha.core.gaming.round.HeroTurn;
+import me.magicall.game.sanguosha.core.gaming.round.RoundEndEvent;
+import me.magicall.game.sanguosha.core.gaming.round.SanguoshaTurn;
 import me.magicall.mark.HasIdGetter.HasIntIdGetter;
 
 import java.util.List;
@@ -13,23 +13,17 @@ import java.util.List;
  */
 public interface Round extends HasIntIdGetter {
 
-    void play();
-
+    /**
+     * @return 所属游戏
+     */
     Game getGame();
 
-    List<HeroTurn> getHeroTurns();
-
-    List<HeroTurn> getRemainingHeroTurns();
-
-    HeroTurn getCurHeroTurn();
-
-    default void addHeroTurn(final HeroTurn heroTurn) {
-        getHeroTurns().add(heroTurn);
-    }
-
     /**
-     * 是否已结束。
-     * @return
+     * @return 已完成的回合
      */
-    boolean isFinished();
+    List<SanguoshaTurn> getFinishedTurns();
+
+    RoundEndEvent play();
+
+    SanguoshaTurn getCurTurn();
 }

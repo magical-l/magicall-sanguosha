@@ -7,30 +7,75 @@ import spock.lang.Specification
  * @author Liang Wenjian
  */
 class HpImplTest extends Specification {
-    def "test init1"() {
-        HpImpl hp = new HpImpl(100)
+    def "test HpImpl(double)"() {
+        HpImpl hp = new HpImpl((double) suppose_max)
         expect:
-        hp.value == 100
-        hp.max == 100
+        expect_hp == hp.value
+        expect_max == hp.max
         hp.max == hp.value
+        where:
+        suppose_max         | expect_max          | expect_hp
+        100                 | 100                 | 100
+        0                   | 0                   | 0
+        -0                  | -0                  | -0
+        1                   | 1                   | 1
+        -1                  | -1                  | -1
+        982.1883            | 982.1883            | 982.1883
+        Integer.MAX_VALUE   | Integer.MAX_VALUE   | Integer.MAX_VALUE
+        Long.MAX_VALUE      | Long.MAX_VALUE      | Long.MAX_VALUE
+        Float.MAX_VALUE     | Float.MAX_VALUE     | Float.MAX_VALUE
+        Double.MAX_VALUE    | Double.MAX_VALUE    | Double.MAX_VALUE
+        Byte.MAX_VALUE      | Byte.MAX_VALUE      | Byte.MAX_VALUE
+        Character.MAX_VALUE | Character.MAX_VALUE | Character.MAX_VALUE
+        Short.MAX_VALUE     | Short.MAX_VALUE     | Short.MAX_VALUE
+        Integer.MIN_VALUE   | Integer.MIN_VALUE   | Integer.MIN_VALUE
+        Long.MIN_VALUE      | Long.MIN_VALUE      | Long.MIN_VALUE
+        Float.MIN_VALUE     | Float.MIN_VALUE     | Float.MIN_VALUE
+        Double.MIN_VALUE    | Double.MIN_VALUE    | Double.MIN_VALUE
+        Byte.MIN_VALUE      | Byte.MIN_VALUE      | Byte.MIN_VALUE
+        Character.MIN_VALUE | Character.MIN_VALUE | Character.MIN_VALUE
+        Short.MIN_VALUE     | Short.MIN_VALUE     | Short.MIN_VALUE
     }
 
-    def "test init2"() {
-        def max = 1000
-        def value = 100
-        def lost = 10
-        HpImpl hp = new HpImpl(max, value)
+    def "test HpImpl(double,double)"() {
+        HpImpl hp = new HpImpl((double) suppose_max, (double) suppose_value)
         expect:
-        hp.value == value
-        hp.max == max
+        expect_hp == hp.value
+        expect_max == hp.max
+        where:
+        suppose_max         | suppose_value       | expect_max          | expect_hp
+        100                 | 100                 | 100                 | 100
+        100                 | 99                  | 100                 | 99
+        Integer.MIN_VALUE   | Integer.MAX_VALUE   | Integer.MIN_VALUE   | Integer.MAX_VALUE
+        Long.MIN_VALUE      | Long.MAX_VALUE      | Long.MIN_VALUE      | Long.MAX_VALUE
+        Float.MIN_VALUE     | Float.MAX_VALUE     | Float.MIN_VALUE     | Float.MAX_VALUE
+        Double.MIN_VALUE    | Double.MAX_VALUE    | Double.MIN_VALUE    | Double.MAX_VALUE
+        Byte.MIN_VALUE      | Byte.MAX_VALUE      | Byte.MIN_VALUE      | Byte.MAX_VALUE
+        Character.MIN_VALUE | Character.MAX_VALUE | Character.MIN_VALUE | Character.MAX_VALUE
+        Short.MIN_VALUE     | Short.MAX_VALUE     | Short.MIN_VALUE     | Short.MAX_VALUE
 
-        when:
-        hp.decrease(lost)
-        then:
-        hp.max == max
-        hp.value == value - lost
-        !hp.full
-        hp.notFull
-        hp.lost == hp.max - hp.value
+        Integer.MAX_VALUE   | Integer.MIN_VALUE   | Integer.MAX_VALUE   | Integer.MIN_VALUE
+        Long.MAX_VALUE      | Long.MIN_VALUE      | Long.MAX_VALUE      | Long.MIN_VALUE
+        Float.MAX_VALUE     | Float.MIN_VALUE     | Float.MAX_VALUE     | Float.MIN_VALUE
+        Double.MAX_VALUE    | Double.MIN_VALUE    | Double.MAX_VALUE    | Double.MIN_VALUE
+        Byte.MAX_VALUE      | Byte.MIN_VALUE      | Byte.MAX_VALUE      | Byte.MIN_VALUE
+        Character.MAX_VALUE | Character.MIN_VALUE | Character.MAX_VALUE | Character.MIN_VALUE
+        Short.MAX_VALUE     | Short.MIN_VALUE     | Short.MAX_VALUE     | Short.MIN_VALUE
     }
+
+    def "test decrease"() {
+        HpImpl hp = new HpImpl((double) suppose_max)
+        hp.decrease((double) suppose_delta)
+        expect:
+        ((double) expect_max) == hp.max
+        ((double) expect_hp) == hp.value
+        where:
+        suppose_max | suppose_delta | expect_max | expect_hp
+        100         | 1             | 100        | 99
+        0           | 1             | 0          | -1
+        1           | 1             | 1          | 0
+    }
+
+    static final Random RANDOM = new Random()
+
 }

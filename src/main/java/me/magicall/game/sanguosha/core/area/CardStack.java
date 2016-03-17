@@ -15,6 +15,10 @@ import java.util.List;
  */
 public class CardStack extends AbsCardsContainer<Deque<Card>> {
 
+    public CardStack(final Sanguosha game) {
+        super(game, Lists.newLinkedList());
+    }
+
     public CardStack(final Sanguosha game, final Collection<Card> cards) {
         super(game, Lists.newLinkedList(cards));
     }

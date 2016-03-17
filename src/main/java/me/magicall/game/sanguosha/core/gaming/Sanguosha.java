@@ -1,27 +1,27 @@
 package me.magicall.game.sanguosha.core.gaming;
 
-import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import me.magicall.game.sanguosha.core.card.Card;
-import me.magicall.game.sanguosha.core.card.CardCfg;
-import me.magicall.game.sanguosha.core.gaming.event.Event;
-import me.magicall.game.sanguosha.core.Targetable;
-import me.magicall.game.sanguosha.core.area.Settlement;
+import me.magicall.game.sanguosha.core.CardManager;
+import me.magicall.game.sanguosha.core.DefaultAreaManagerImpl;
+import me.magicall.game.sanguosha.core.DefaultCardManagerImpl;
+import me.magicall.game.sanguosha.core.DefaultHeroManagerImpl;
+import me.magicall.game.sanguosha.core.DefaultPlayerManagerImpl;
+import me.magicall.game.sanguosha.core.DefaultRoundManager;
+import me.magicall.game.sanguosha.core.GameOverException;
+import me.magicall.game.sanguosha.core.HeroManager;
+import me.magicall.game.sanguosha.core.PlayerManager;
 import me.magicall.game.sanguosha.core.area.CardStack;
-import me.magicall.game.sanguosha.core.area.HandArea;
+import me.magicall.game.sanguosha.core.area.Settlement;
 import me.magicall.game.sanguosha.core.area.UsedCardStack;
-import me.magicall.game.sanguosha.core.card.GamingCard;
-import me.magicall.game.sanguosha.core.gaming.option.SelectHeroOptions;
-import me.magicall.game.sanguosha.core.gaming.position.Position;
-import me.magicall.game.sanguosha.core.gaming.round.HeroTurn;
-import me.magicall.game.sanguosha.core.gaming.round.SanguoshaRound;
-import me.magicall.game.sanguosha.core.gaming.stage.Stage;
+import me.magicall.game.sanguosha.core.card.Card;
+import me.magicall.game.sanguosha.core.gaming.event.Event;
+import me.magicall.game.sanguosha.core.gaming.event.EventPublisher;
+import me.magicall.game.sanguosha.core.gaming.round.RoundEndEvent;
+import me.magicall.game.sanguosha.core.gaming.round.SanguoshaTurn;
 import me.magicall.game.sanguosha.core.gaming.target.BecomingTargetsEvent;
 import me.magicall.game.sanguosha.core.gaming.target.TargetSelector;
 import me.magicall.game.sanguosha.core.player.GamingPlayer;
-import me.magicall.game.sanguosha.core.player.IO;
 import me.magicall.game.sanguosha.core.player.Role;
 import me.magicall.game.sanguosha.core.rule.Rule;
 import me.magicall.game.sanguosha.core.skill.Effect;
@@ -30,8 +30,6 @@ import me.magicall.game.sanguosha.core.skill.SkillEvent;
 import me.magicall.game.sanguosha.core.unit.Hero;
 import me.magicall.game.sanguosha.core.unit.HeroCfg;
 import me.magicall.game.sanguosha.embedded.标准.event.HarmingEvent;
-import me.magicall.game.sanguosha.embedded.标准.event.HerosShownEvent;
-import me.magicall.game.sanguosha.embedded.标准.event.InitHandEvent;
 import me.magicall.game.sanguosha.embedded.标准.event.WarEndEvent;
 import me.magicall.game.sanguosha.embedded.标准.event.WarStartEvent;
 import org.slf4j.Logger;
@@ -42,13 +40,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Random;
 
 /**
  * @author Liang Wenjian
  */
-public class Sanguosha implements Game, Targetable {
+public class Sanguosha implements Game {
 
     //------------------------ 工具
 
@@ -56,244 +53,121 @@ public class Sanguosha implements Game, Targetable {
 
     //------------------------ 配置
 
+    /**
+     * 本场游戏使用的设置
+     */
     private final SanguoshaCfg cfg;
-    private List<IO> ios;
+    /**
+     * 本场游戏使用的规则集
+     */
     private List<Rule> rules;
 
     //------------------------ 初始化数据
 
-    private final List<GamingPlayer> players = Lists.newArrayList();
-    /**
-     * 武将备选记录。
-     */
-    private final ListMultimap<GamingPlayer, HeroCfg> heroOptions = ArrayListMultimap.create();
+    private final PlayerManager playerManager;
 
-    /**
-     * 武将库。
-     */
-    private final List<HeroCfg> heroCfgs;
+    private final HeroManager heroManager;
 
-    /**
-     * 牌库。键为牌在游戏中的id。
-     */
-    private final Map<Integer, GamingCard> idCardMap = Maps.newHashMap();
-    /**
-     * 位置管理器
-     */
-    private final PositionManager positionManager = new PositionManager();
-
-    /**
-     * 队伍列表
-     */
-    private List<Team> teams;
-    /**
-     * 记分牌
-     */
-    private Scoreboard scoreboard;
-
-    /**
-     * 当前轮次
-     */
-    private Round curRound;
-    /**
-     * 当前回合
-     */
-    private HeroTurn curHeroTurn;
-    /**
-     * 当前阶段
-     */
-    private Stage curStage;
-    /**
-     * 当前玩家
-     */
-    private GamingPlayer curPlayer;
+    private final CardManager cardManager;
+    private final RoundManager roundManager;
 
     //------------------------ 游戏
 
-    /**
-     * 存活者。按位置顺序排列。
-     */
-    private final List<GamingPlayer> survivors = Lists.newArrayList();
-    /**
-     * 牌堆。
-     */
-    private final CardStack cardStack = new CardStack(null);//TODO
-    /**
-     * 结算区。
-     */
-    private final Settlement settlement = new Settlement();
-    /**
-     * 弃牌堆。
-     */
-    private final UsedCardStack usedCardStack = new UsedCardStack();
+    private final AreaManager areaManager;
 
-    /**
-     * 轮次。
-     */
-    private final List<Round> rounds = Lists.newArrayList();
     private boolean gameOver;
+
+    private EventPublisher eventPublisher;
 
     //===============================================
 
     public Sanguosha(final SanguoshaCfg cfg) {
         this.cfg = cfg;
-        final List<HeroCfg> tmp = Lists.newArrayList(cfg.getHeroCfgs());
-        Collections.shuffle(tmp);
-        heroCfgs = tmp;
+        heroManager = new DefaultHeroManagerImpl(this);
+        playerManager = new DefaultPlayerManagerImpl(this);
+        areaManager = new DefaultAreaManagerImpl(this);
+        roundManager = new DefaultRoundManager(this);
+        cardManager = new DefaultCardManagerImpl(this);
     }
 
     @Override
     public Scoreboard start() {
+        //初始化牌堆
         initCardStack();
+        //初始化位置
         initPosition();
-
+        //选英雄
         selectHero();
-
+        //分发初始手牌
         initHand();
-
-        start0();
-        return null;
-    }
-
-    private void start0() {
+        //正式开始，发布事件
         publishEvent(new WarStartEvent(this));
-        int roundIndex = 0;
-        while (!gameOver) {
-            final Round round = new SanguoshaRound(this, roundIndex);
-            round.play();
-            rounds.add(round);
-            roundIndex++;
+        //当游戏未结束
+        while (true) {
+            try {
+                //一轮一轮玩
+                final RoundEndEvent roundEndEvent = roundManager.roundPlay();
+                publishEvent(roundEndEvent);
+            } catch (final GameOverException ignored) {
+                break;
+            }
         }
+        //游戏结束，发布事件
         publishEvent(new WarEndEvent(this));
+        //返回记分牌
+        return playerManager.getScoreboard();
     }
 
     private void initHand() {
-        survivors.forEach(player -> {
-            final Collection<Card> cards = cardsStackPop(cfg.getInitHandCardsCount());
-            final HandArea hand = player.getHero().getHand();
-            if (hand.canGain(cards)) {
-                hand.gain(cards);
-            } else {
-                cardStack.gain(cards);
-            }
-        });
-        publishEvent(new InitHandEvent(this));
+        playerManager.initHand();
     }
 
     private void selectHero() {
-        final Map<GamingPlayer, HeroCfg> map = Maps.newLinkedHashMap();
-        //选将
-        survivors.forEach(player -> {
-            final HeroCfg selected = player.requireInput(new SelectHeroOptions(getOptionHeros(player)))//
-                    .getHeroCfg();
-            player.setHero(new Hero(selected, this, player, player.getPosition()));
-            final List<HeroCfg> options = heroOptions.get(player);
-            options.remove(selected);
-            heroCfgs.addAll(options);//没有选的武将还回武将堆。
-            map.put(player, selected);
-        });
-        //亮武将
-        survivors.forEach(player -> player.output(map));
-        publishEvent(new HerosShownEvent(this, map));
+        playerManager.selectHero();
     }
 
     public int getCardStackSize() {
-        return cardStack.getCards().size();
+        return areaManager.getCardStackSize();
     }
 
     public int getRoundCount() {
-        return rounds.size() + 1;
+        return roundManager.getFinishedRoundCount();
     }
 
     public void publishEvent(final Event<?, ?> event) {
-        //TODO
+        eventPublisher.publish(event);
     }
 
     public int calculateDistance(final Hero from, final Hero to) {
-        return positionManager.calculateDistance(from, to);
+        return playerManager.calculateDistance(from, to);
     }
 
     private List<HeroCfg> getOptionHeros(final GamingPlayer player) {
-        final int size = 3;
-        final List<HeroCfg> rt = Lists.newArrayListWithExpectedSize(size);
-        for (int i = 0; i < size; i++) {
-            final HeroCfg removed = heroCfgs.remove(i);
-            rt.add(removed);
-        }
-        heroOptions.putAll(player, rt);
-        return rt;
+        return heroManager.getOptionHeros(player);
     }
 
     private void initPosition() {
-        final List<IO> ios = Lists.newArrayList(cfg.getIOs());
-        final int size = ios.size();
-
-        final Map<Role, Integer> countOfRole = cfg.getCountOfRole();
-        final List<Role> tmpRoles = Lists.newArrayListWithExpectedSize(size);
-        for (final Entry<Role, Integer> entry : countOfRole.entrySet()) {
-            final Role role = entry.getKey();
-            final Integer count = entry.getValue();
-            for (int i = 0; i < count; i++) {
-                tmpRoles.add(role);
-            }
-        }
-        if (size != tmpRoles.size()) {
-            throw new IllegalStateException("玩家和角色不一样多。");
-        }
-        Collections.shuffle(tmpRoles);
-
-        if (!cfg.isPositionFixed()) {
-            Collections.shuffle(ios);
-        }
-        int i = 1;
-        for (final IO io : ios) {
-            final Position position = new Position(i);
-            final GamingPlayer p = new GamingPlayer();
-            p.setRole(tmpRoles.get(i));
-            p.setIO(io);
-            p.setPosition(position);
-            survivors.add(p);
-            players.add(p);
-            i++;
-        }
-        survivors.sort((o1, o2) -> o1.getPosition().compareTo(o2.getPosition()));
-        logger.debug(ios.toString());
+        playerManager.initPosition();
     }
 
     private void initCardStack() {
-        final Map<CardCfg, Integer> cardCfgCount = cfg.getCountOfCardCfg();
-        int id = 1;
-        final List<Card> cards = Lists.newArrayList();
-        for (final Entry<CardCfg, Integer> entry : cardCfgCount.entrySet()) {
-            final CardCfg cardCfg = entry.getKey();
-            final Integer count = entry.getValue();
-            for (int i = 0; i < count; ++i) {
-                final GamingCard card = new GamingCard(id, cardCfg);
-                cards.add(card);
-                idCardMap.put(id, card);
-                id++;
-            }
-        }
-        Collections.shuffle(cards);
-        cardStack.gain(cards);
-
-        logger.debug("initCardStack end:" + cardStack);
+        cardManager.initCardStack();
     }
 
     public List<HeroCfg> getHeroCfgs() {
-        return heroCfgs;
+        return heroManager.getHeroCfgs();
     }
 
     public CardStack getCardStack() {
-        return cardStack;
+        return areaManager.getCardStack();
     }
 
     public Settlement getSettlement() {
-        return settlement;
+        return areaManager.getSettlement();
     }
 
     public UsedCardStack getUsedCardStack() {
-        return usedCardStack;
+        return areaManager.getUsedCardStack();
     }
 
     public boolean isGameOver() {
@@ -306,12 +180,12 @@ public class Sanguosha implements Game, Targetable {
 
     @Override
     public List<GamingPlayer> getPlayers() {
-        return players;
+        return playerManager.getPlayers();
     }
 
     @Override
     public List<Team> getTeams() {
-        return teams;
+        return playerManager.getTeams();
     }
 
     public void cardWork(final Card card, final Hero user) {
@@ -326,38 +200,19 @@ public class Sanguosha implements Game, Targetable {
             final Effect<?> effect = skill.action(this, user, targets, resources);
             effect.doEffect();
         }
-
         //TODO
     }
 
     public Collection<Card> cardsStackPop(final int count) {
-        if (cardStack.getCardsCount() < count) {
-            //牌堆不够就洗牌
-            final List<Card> cards = Lists.newArrayList(usedCardStack.getCards());
-            usedCardStack.loss(cards);
-            Collections.shuffle(cards);
-            cardStack.gain(cards);
-            //洗牌后依然不够
-            if (cardStack.getCardsCount() < count) {
-                throw new NoEnoughCardException();
-            }
-        }
-        return cardStack.poll(count);
+        return areaManager.cardStackPop(count);
     }
 
     public Card getCard(final Integer cardId) {
-        return idCardMap.get(cardId);
+        return cardManager.getCard(cardId);
     }
 
     public void heroDead(final Hero hero) {
         //TODO
-    }
-
-    @Override
-    public String toString() {
-        return getClass().getSimpleName() + hashCode() + ":{" +
-                "cfg:" + cfg +
-                '}';
     }
 
     public void harm(final Hero target, final SkillEvent skillEvent) {
@@ -386,7 +241,7 @@ public class Sanguosha implements Game, Targetable {
         hooks.put(hook.getEventClass(), hook);
     }
 
-    public void doHook(final Event event) {
+    public void doHook(final Event<?, ?> event) {
         final List<Hook<?>> hooks = this.hooks.get(event.getClass());
         if (hooks != null) {
             final ListIterator<Hook<?>> iterator = hooks.listIterator();
@@ -408,6 +263,10 @@ public class Sanguosha implements Game, Targetable {
         }
     }
 
+    public SanguoshaCfg getCfg() {
+        return cfg;
+    }
+
     public Skill getSkill(final int skillId) {
         return null;//TODO
     }
@@ -415,6 +274,51 @@ public class Sanguosha implements Game, Targetable {
     public void skillAction(final Skill skill, final Hero user, final Collection<Card> resources,
                             final List<Hero> targets) {
         skill.action(this, user, targets, resources);
+    }
+
+    public List<Rule> getRules() {
+        return rules;
+    }
+
+    public PlayerManager getPlayerManager() {
+        return playerManager;
+    }
+
+    public HeroManager getHeroManager() {
+        return heroManager;
+    }
+
+    public CardManager getCardManager() {
+        return cardManager;
+    }
+
+    public RoundManager getRoundManager() {
+        return roundManager;
+    }
+
+    public AreaManager getAreaManager() {
+        return areaManager;
+    }
+
+    public Round getCurRound() {
+        return roundManager.getCurRound();
+    }
+
+    public SanguoshaTurn getCurTurn() {
+        return getCurRound().getCurTurn();
+    }
+
+//    public Stage getCurStage(){
+//        return getCurTurn().getCurStage();
+//    }
+
+    //============================
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + hashCode() + ":{" +
+                "cfg:" + cfg +
+                '}';
     }
 
     private static final Random RANDOM = new Random();
@@ -434,5 +338,4 @@ public class Sanguosha implements Game, Targetable {
             p.setRole(role);
         });
     }
-
 }

@@ -1,12 +1,8 @@
 package me.magicall.game.sanguosha.core.gaming.stage;
 
-import me.magicall.game.sanguosha.core.card.Card;
 import me.magicall.game.sanguosha.core.gaming.Sanguosha;
 import me.magicall.game.sanguosha.core.player.GamingPlayer;
 import me.magicall.game.sanguosha.core.unit.Hero;
-
-import java.util.List;
-import java.util.ListIterator;
 
 /**
  * 判定阶段。
@@ -24,10 +20,10 @@ public class JudgementStage extends AbsStage {
     protected void playInternal() {
         final Sanguosha game = getGame();
         final GamingPlayer owner = (GamingPlayer) getOwner();
-        final List<Card> cards = owner.getJudgement().getCards();
-        for (final ListIterator<Card> iterator = cards.listIterator(); iterator.hasPrevious(); ) {
-            final Card card = iterator.previous();
-            game.cardWork(card, null);// TODO
-        }
+//        final List<Card> cards = owner.getJudgement().getCards();
+//        for (final ListIterator<Card> iterator = cards.listIterator(); iterator.hasPrevious(); ) {
+//            final Card card = iterator.previous();
+//            game.cardWork(card, null);// TODO
+//        }
     }
 }

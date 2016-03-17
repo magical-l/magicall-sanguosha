@@ -26,8 +26,8 @@ public class GainCardStage extends AbsStage {
     protected void playInternal() {
         final Collection<Card> cards = getGame().cardsStackPop(GAIN_COUNT);
         final CardsContainer hand = ((GamingPlayer)getOwner()).getHand();
-        if (hand.canGain(cards)) {
-            hand.gain(cards);
-        }
+//        if (hand.canGain(cards)) {
+//            hand.gain(cards);
+//        }
     }
 }

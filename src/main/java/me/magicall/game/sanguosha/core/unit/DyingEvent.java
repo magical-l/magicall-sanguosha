@@ -1,14 +1,14 @@
 package me.magicall.game.sanguosha.core.unit;
 
+import me.magicall.game.sanguosha.core.Targetable;
 import me.magicall.game.sanguosha.core.gaming.event.EventTemplate;
-import me.magicall.game.sanguosha.core.gaming.Sanguosha;
 
 /**
  * 濒死事件
  *
  * @author Liang Wenjian
  */
-public class DyingEvent extends EventTemplate<Hero, Sanguosha> {
+public class DyingEvent extends EventTemplate<Hero, Targetable> {
 
     /**
      * Create a new ApplicationEvent.
