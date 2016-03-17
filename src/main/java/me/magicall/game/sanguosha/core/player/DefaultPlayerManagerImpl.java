@@ -1,17 +1,12 @@
-package me.magicall.game.sanguosha.core;
+package me.magicall.game.sanguosha.core.player;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import me.magicall.game.sanguosha.core.area.HandArea;
-import me.magicall.game.sanguosha.core.gaming.PositionManager;
 import me.magicall.game.sanguosha.core.gaming.Sanguosha;
 import me.magicall.game.sanguosha.core.gaming.SanguoshaCfg;
 import me.magicall.game.sanguosha.core.gaming.Scoreboard;
-import me.magicall.game.sanguosha.core.gaming.Team;
 import me.magicall.game.sanguosha.core.gaming.position.Position;
-import me.magicall.game.sanguosha.core.player.GamingPlayer;
-import me.magicall.game.sanguosha.core.player.IO;
-import me.magicall.game.sanguosha.core.player.Role;
 import me.magicall.game.sanguosha.core.unit.Hero;
 import me.magicall.game.sanguosha.core.unit.HeroCfg;
 import me.magicall.game.sanguosha.embedded.标准.event.HerosShownEvent;

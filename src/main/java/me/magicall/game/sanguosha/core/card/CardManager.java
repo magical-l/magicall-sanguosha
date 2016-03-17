@@ -1,4 +1,4 @@
-package me.magicall.game.sanguosha.core;
+package me.magicall.game.sanguosha.core.card;
 
 import me.magicall.game.sanguosha.core.card.Card;
 

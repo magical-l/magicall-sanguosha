@@ -1,6 +1,6 @@
 package me.magicall.game.sanguosha.core.gaming.stage;
 
-import me.magicall.game.sanguosha.core.gaming.CardsSelection;
+import me.magicall.game.sanguosha.core.card.CardsSelection;
 import me.magicall.game.sanguosha.core.gaming.option.Options;
 import me.magicall.game.sanguosha.core.unit.Hero;
 

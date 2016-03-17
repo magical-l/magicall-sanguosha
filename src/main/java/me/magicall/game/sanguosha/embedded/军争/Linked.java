@@ -2,7 +2,7 @@ package me.magicall.game.sanguosha.embedded.军争;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
-import me.magicall.game.sanguosha.core.Status;
+import me.magicall.game.sanguosha.core.unit.Status;
 import me.magicall.game.sanguosha.embedded.标准.event.HarmedEvent;
 import me.magicall.game.sanguosha.core.gaming.Sanguosha;
 import me.magicall.game.sanguosha.core.unit.Hero;

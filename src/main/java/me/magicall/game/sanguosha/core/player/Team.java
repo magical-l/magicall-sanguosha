@@ -1,7 +1,8 @@
-package me.magicall.game.sanguosha.core.gaming;
+package me.magicall.game.sanguosha.core.player;
 
 import me.magicall.game.sanguosha.core.Condition.FailCondition;
 import me.magicall.game.sanguosha.core.Condition.WinCondition;
+import me.magicall.game.sanguosha.core.gaming.Game;
 import me.magicall.game.sanguosha.core.player.GamingPlayer;
 import me.magicall.mark.HasIdGetter.HasIntIdGetter;
 import me.magicall.mark.Named;

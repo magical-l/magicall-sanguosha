@@ -1,6 +1,7 @@
 package me.magicall.game.sanguosha.core.gaming;
 
 import me.magicall.game.sanguosha.core.player.GamingPlayer;
+import me.magicall.game.sanguosha.core.player.Team;
 
 import java.util.List;
 

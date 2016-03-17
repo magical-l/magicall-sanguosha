@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
  *
  * @author Liang Wenjian
  */
-public class EquipArea extends AbsPlayerCardArea<List<Card>> {
+public class EquipArea extends AbsPlayerCardArea {
 
     public static final int WEAPON_INDEX = 0;
     public static final int SHIELD_INDEX = 1;

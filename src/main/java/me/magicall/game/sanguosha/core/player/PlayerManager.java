@@ -1,8 +1,8 @@
-package me.magicall.game.sanguosha.core;
+package me.magicall.game.sanguosha.core.player;
 
 import me.magicall.game.sanguosha.core.gaming.Sanguosha;
 import me.magicall.game.sanguosha.core.gaming.Scoreboard;
-import me.magicall.game.sanguosha.core.gaming.Team;
+import me.magicall.game.sanguosha.core.player.Team;
 import me.magicall.game.sanguosha.core.player.GamingPlayer;
 import me.magicall.game.sanguosha.core.unit.Hero;
 

@@ -1,6 +1,5 @@
-package me.magicall.game.sanguosha.core;
+package me.magicall.game.sanguosha.core.unit;
 
-import me.magicall.game.sanguosha.core.unit.Hero;
 import me.magicall.mark.Named;
 
 /**

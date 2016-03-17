@@ -1,4 +1,4 @@
-package me.magicall.game.sanguosha.core;
+package me.magicall.game.sanguosha.core.gaming;
 
 /**
  * 游戏结束异常。

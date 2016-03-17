@@ -4,7 +4,6 @@ import me.magicall.game.sanguosha.core.area.EquipArea;
 import me.magicall.game.sanguosha.core.area.HandArea;
 import me.magicall.game.sanguosha.core.area.JudgementArea;
 import me.magicall.game.sanguosha.core.gaming.Sanguosha;
-import me.magicall.game.sanguosha.core.gaming.Team;
 import me.magicall.game.sanguosha.core.gaming.option.Options;
 import me.magicall.game.sanguosha.core.gaming.option.Selection;
 import me.magicall.game.sanguosha.core.gaming.position.Position;

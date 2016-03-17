@@ -2,15 +2,16 @@ package me.magicall.game.sanguosha.core.gaming;
 
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Lists;
-import me.magicall.game.sanguosha.core.CardManager;
-import me.magicall.game.sanguosha.core.DefaultAreaManagerImpl;
-import me.magicall.game.sanguosha.core.DefaultCardManagerImpl;
-import me.magicall.game.sanguosha.core.DefaultHeroManagerImpl;
-import me.magicall.game.sanguosha.core.DefaultPlayerManagerImpl;
-import me.magicall.game.sanguosha.core.DefaultRoundManager;
-import me.magicall.game.sanguosha.core.GameOverException;
-import me.magicall.game.sanguosha.core.HeroManager;
-import me.magicall.game.sanguosha.core.PlayerManager;
+import me.magicall.game.sanguosha.core.area.AreaManager;
+import me.magicall.game.sanguosha.core.card.CardManager;
+import me.magicall.game.sanguosha.core.area.DefaultAreaManagerImpl;
+import me.magicall.game.sanguosha.core.card.DefaultCardManagerImpl;
+import me.magicall.game.sanguosha.core.gaming.round.RoundManager;
+import me.magicall.game.sanguosha.core.unit.DefaultHeroManagerImpl;
+import me.magicall.game.sanguosha.core.player.DefaultPlayerManagerImpl;
+import me.magicall.game.sanguosha.core.gaming.round.DefaultRoundManager;
+import me.magicall.game.sanguosha.core.unit.HeroManager;
+import me.magicall.game.sanguosha.core.player.PlayerManager;
 import me.magicall.game.sanguosha.core.area.CardStack;
 import me.magicall.game.sanguosha.core.area.Settlement;
 import me.magicall.game.sanguosha.core.area.UsedCardStack;
@@ -23,6 +24,7 @@ import me.magicall.game.sanguosha.core.gaming.target.BecomingTargetsEvent;
 import me.magicall.game.sanguosha.core.gaming.target.TargetSelector;
 import me.magicall.game.sanguosha.core.player.GamingPlayer;
 import me.magicall.game.sanguosha.core.player.Role;
+import me.magicall.game.sanguosha.core.player.Team;
 import me.magicall.game.sanguosha.core.rule.Rule;
 import me.magicall.game.sanguosha.core.skill.Effect;
 import me.magicall.game.sanguosha.core.skill.Skill;
@@ -203,7 +205,7 @@ public class Sanguosha implements Game {
         //TODO
     }
 
-    public Collection<Card> cardsStackPop(final int count) {
+    public List<Card> cardsStackPop(final int count) {
         return areaManager.cardStackPop(count);
     }
 

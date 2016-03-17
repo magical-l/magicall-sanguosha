@@ -96,8 +96,8 @@ public class 困奋 implements Skill {
         public void doEffect() {
             final Hero hero = user.getHero();
             hero.getHp().decrease(1);
-            final Collection<Card> cards = game.cardsStackPop(2);
-            hero.getHand().gain(cards);
+            final List<Card> cards = game.cardsStackPop(2);
+            hero.getHand().putToEnd(cards);
         }
     }
 }

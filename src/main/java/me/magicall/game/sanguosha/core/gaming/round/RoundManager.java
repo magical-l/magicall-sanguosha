@@ -1,5 +1,6 @@
-package me.magicall.game.sanguosha.core.gaming;
+package me.magicall.game.sanguosha.core.gaming.round;
 
+import me.magicall.game.sanguosha.core.gaming.Round;
 import me.magicall.game.sanguosha.core.gaming.round.RoundEndEvent;
 import me.magicall.game.sanguosha.core.gaming.round.SanguoshaTurn;
 

@@ -4,16 +4,16 @@ import me.magicall.game.sanguosha.core.card.Card;
 import me.magicall.game.sanguosha.core.gaming.Sanguosha;
 import me.magicall.game.sanguosha.core.player.SanguoshaPlayer;
 
-import java.util.Collection;
+import java.util.List;
 
 /**
  * @author Liang Wenjian
  */
-public abstract class AbsPlayerCardArea<C extends Collection<Card>> extends AbsCardsContainer<C> {
+public abstract class AbsPlayerCardArea extends AbsCardsContainer {
 
     protected final SanguoshaPlayer owner;
 
-    public AbsPlayerCardArea(final Sanguosha game, final C cards, final SanguoshaPlayer owner) {
+    public AbsPlayerCardArea(final Sanguosha game, final List<Card> cards, final SanguoshaPlayer owner) {
         super(game, cards);
         this.owner = owner;
     }

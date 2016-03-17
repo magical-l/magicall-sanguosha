@@ -1,4 +1,4 @@
-package me.magicall.game.sanguosha.core;
+package me.magicall.game.sanguosha.core.skill;
 
 /**
  * 技能管理器

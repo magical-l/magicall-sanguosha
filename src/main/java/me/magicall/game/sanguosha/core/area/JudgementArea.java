@@ -1,23 +1,22 @@
 package me.magicall.game.sanguosha.core.area;
 
+import com.google.common.collect.Lists;
 import me.magicall.game.sanguosha.core.card.Card;
 import me.magicall.game.sanguosha.core.card.CardTypes;
 import me.magicall.game.sanguosha.core.gaming.Sanguosha;
 import me.magicall.game.sanguosha.core.player.SanguoshaPlayer;
 
-import java.util.ArrayDeque;
 import java.util.Collection;
-import java.util.Deque;
 
 /**
  * 判定区。
  *
  * @author Liang Wenjian
  */
-public class JudgementArea extends AbsPlayerCardArea<Deque<Card>> {
+public class JudgementArea extends AbsPlayerCardArea {
 
     public JudgementArea(final Sanguosha game, final SanguoshaPlayer owner) {
-        super(game, new ArrayDeque<>(), owner);
+        super(game, Lists.newLinkedList(), owner);
     }
 
     public boolean canGain(final Card card) {

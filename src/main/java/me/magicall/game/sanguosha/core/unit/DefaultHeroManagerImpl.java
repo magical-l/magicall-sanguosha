@@ -1,4 +1,4 @@
-package me.magicall.game.sanguosha.core;
+package me.magicall.game.sanguosha.core.unit;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
@@ -6,7 +6,6 @@ import com.google.common.collect.Lists;
 import me.magicall.game.sanguosha.core.gaming.Sanguosha;
 import me.magicall.game.sanguosha.core.gaming.SanguoshaCfg;
 import me.magicall.game.sanguosha.core.player.GamingPlayer;
-import me.magicall.game.sanguosha.core.unit.HeroCfg;
 
 import java.util.Collections;
 import java.util.List;

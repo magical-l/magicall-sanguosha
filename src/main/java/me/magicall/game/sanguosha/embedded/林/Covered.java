@@ -1,6 +1,6 @@
 package me.magicall.game.sanguosha.embedded.林;
 
-import me.magicall.game.sanguosha.core.Status;
+import me.magicall.game.sanguosha.core.unit.Status;
 import me.magicall.game.sanguosha.core.unit.Hero;
 
 /**

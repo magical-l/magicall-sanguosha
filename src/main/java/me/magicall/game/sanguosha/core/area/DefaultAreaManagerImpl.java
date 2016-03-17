@@ -1,15 +1,10 @@
-package me.magicall.game.sanguosha.core;
+package me.magicall.game.sanguosha.core.area;
 
 import com.google.common.collect.Lists;
-import me.magicall.game.sanguosha.core.area.CardStack;
-import me.magicall.game.sanguosha.core.area.Settlement;
-import me.magicall.game.sanguosha.core.area.UsedCardStack;
 import me.magicall.game.sanguosha.core.card.Card;
-import me.magicall.game.sanguosha.core.gaming.AreaManager;
 import me.magicall.game.sanguosha.core.gaming.NoEnoughCardException;
 import me.magicall.game.sanguosha.core.gaming.Sanguosha;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -58,18 +53,18 @@ public class DefaultAreaManagerImpl implements AreaManager {
     }
 
     @Override
-    public Collection<Card> cardStackPop(final int count) {
+    public List<Card> cardStackPop(final int count) {
         if (cardStack.getCardsCount() < count) {
             //牌堆不够就洗牌
             final List<Card> cards = Lists.newArrayList(usedCardStack.getCards());
 //            usedCardStack.loss(cards);
             Collections.shuffle(cards);
-            cardStack.gain(cards);
+            cardStack.putToEnd(cards);
             //洗牌后依然不够
             if (cardStack.getCardsCount() < count) {
                 throw new NoEnoughCardException();
             }
         }
-        return cardStack.poll(count);
+        return cardStack.removeAtStart(count);
     }
 }

@@ -4,7 +4,7 @@ import me.magicall.game.sanguosha.core.card.Card;
 import me.magicall.game.sanguosha.core.card.CardCfg;
 import me.magicall.game.sanguosha.core.card.CardTypes;
 import me.magicall.game.sanguosha.core.card.Flower;
-import me.magicall.game.sanguosha.core.gaming.CardSelection;
+import me.magicall.game.sanguosha.core.card.CardSelection;
 import me.magicall.game.sanguosha.core.gaming.Sanguosha;
 import me.magicall.game.sanguosha.core.gaming.option.Options;
 import me.magicall.game.sanguosha.core.gaming.target.BecameTargetsEvent;

@@ -1,11 +1,8 @@
-package me.magicall.game.sanguosha.core;
+package me.magicall.game.sanguosha.core.card;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import me.magicall.game.sanguosha.core.area.CardStack;
-import me.magicall.game.sanguosha.core.card.Card;
-import me.magicall.game.sanguosha.core.card.CardCfg;
-import me.magicall.game.sanguosha.core.card.GamingCard;
 import me.magicall.game.sanguosha.core.gaming.Sanguosha;
 import me.magicall.game.sanguosha.core.gaming.SanguoshaCfg;
 import org.slf4j.Logger;
@@ -55,7 +52,7 @@ public class DefaultCardManagerImpl implements CardManager {
             }
         }
         Collections.shuffle(cards);
-        cardStack.gain(cards);
+        cardStack.putToEnd(cards);
 
         logger.debug("initCardStack end:" + cardStack);
     }
